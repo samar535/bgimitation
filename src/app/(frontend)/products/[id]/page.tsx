@@ -111,7 +111,7 @@ export default function ProductDetailPage() {
 
   return (
     <FrontendLayout>
-    <div className="py-16 px-4 min-h-screen">
+    <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-gray-600">

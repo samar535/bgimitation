@@ -293,7 +293,7 @@ export default function AboutPage() {
       </section>
 
       {/* Contact Info */}
-      <section className="py-16 px-4 bg-white border-t">
+      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-white border-t">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>

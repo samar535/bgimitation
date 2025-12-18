@@ -75,7 +75,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div
-      className={`group relative bg-white rounded-2xl overflow-hidden shadow-md transition-all duration-300 ${
+      className={`group relative bg-white/95 rounded-2xl overflow-hidden shadow-md transition-all duration-300 ${
         isSoldOut ? 'opacity-70' : 'hover:shadow-xl hover:-translate-y-1'
       }`}
       onMouseEnter={() => setIsHovered(true)}
@@ -96,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Wishlist + Cart Icons */}
-      <div className="absolute top-10 right-3 z-10 grid gap-2">
+      <div className="absolute top-3 right-2 z-10 grid gap-2">
         <button
           onClick={handleWishlist}
           className="p-2 bg-white rounded-full shadow-md hover:scale-110 transition-all"
@@ -193,10 +193,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.name}
           </h3>
         </Link>
-        
+
         {/* Price + Discount*/}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <span className="text-xl md:text-2xl font-bold text-secondary">
+          <span className="text-lg md:text-2xl font-bold text-secondary">
             {formatPrice(product.price)}
           </span>
           {product.originalPrice > product.price && (
@@ -221,11 +221,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               : 'bg-secondary hover:bg-secondary-dark shadow-md'
           }`}
         >
-          <Phone size={16} className="md:size-18" />
-          <span className="hidden xs:inline">
+          <Phone className="text-md sm:text-2xl" />
+          <span className="hidden sm:inline">
             {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
           </span>
-          <span className="xs:hidden">
+          <span className="sm:hidden">
             {isSoldOut ? 'Sold Out' : 'WhatsApp'}
           </span>
         </button>

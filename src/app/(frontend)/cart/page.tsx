@@ -35,7 +35,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen py-16 px-4 text-center bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 text-center bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-md mx-auto">
           <h1 className="text-4xl font-bold mb-6 text-dark font-serif">Your Cart is Empty</h1>
           <p className="text-gray-600 mb-8 text-lg">
@@ -53,7 +53,7 @@ export default function CartPage() {
 
   return (
     <FrontendLayout>
-    <div className="min-h-screen py-16 px-4 bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-dark font-serif">
           Your Shopping Cart
