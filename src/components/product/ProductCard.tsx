@@ -215,18 +215,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <button
           onClick={handleWhatsAppOrder}
           disabled={isSoldOut}
-          className={`w-full py-2.5 md:py-3 rounded-full font-medium text-white transition-all flex items-center justify-center gap-2 text-sm md:text-base ${
+          className={`w-full py-2.5 rounded-lg font-medium text-white transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
             isSoldOut
               ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-secondary hover:bg-secondary-dark shadow-md'
+              : 'bg-secondary hover:bg-secondary-dark'
           }`}
         >
-          <Phone className="text-md sm:text-2xl" />
-          <span className="hidden sm:inline">
+          <Phone className="w-3 sm:w-5 h-3 sm-h-5" />
+          <span className="hidden xs:inline">
             {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
           </span>
-          <span className="sm:hidden">
-            {isSoldOut ? 'Sold Out' : 'WhatsApp'}
+          <span className="xs:hidden">
+            {isSoldOut ? 'Out' : 'WhatsApp'}
           </span>
         </button>
       </div>
