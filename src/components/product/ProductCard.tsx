@@ -221,7 +221,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               : 'bg-secondary hover:bg-secondary-dark'
           }`}
         >
-          <Phone className="w-3 sm:w-5 h-3 sm-h-5" />
+          <Phone className="w-4 sm:w-5 h-4 sm-h-5" />
           <span className="hidden xs:inline">
             {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
           </span>
