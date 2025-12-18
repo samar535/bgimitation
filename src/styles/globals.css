@@ -1,0 +1,150 @@
+
+/* ----------------------------------------------------
+   GOOGLE FONTS
+----------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+/* ----------------------------------------------------
+   TAILWIND v4 CORE IMPORT
+----------------------------------------------------- */
+@import "tailwindcss";
+
+
+
+/* ----------------------------------------------------
+   THEME (OLD CONFIG → NEW TAILWIND v4 THEME)
+----------------------------------------------------- */
+@theme {
+  /* Colors */
+  --color-primary: #C9A961;
+  --color-primary-light: #D4AF37;
+  --color-primary-dark: #B8984E;
+
+  --color-secondary: #8B3A62;
+  --color-secondary-light: #A04875;
+  --color-secondary-dark: #6E2E4E;
+
+  --color-accent: #D4AF37;
+  --color-dark: #2C1810;
+  --color-light: #FFF8F0;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  /* Animations */
+  --animate-fade-in: fadeIn 0.6s ease-out;
+  --animate-slide-up: slideUp 0.4s ease-out;
+  --animate-scale-in: scaleIn 0.3s ease-out;
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    0% { transform: translateY(100%); }
+    100% { transform: translateY(0); }
+  }
+
+  @keyframes scaleIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+}
+
+/* ----------------------------------------------------
+   BASE LAYER (AAPKA PURA CODE MERGE + IMPROVED)
+----------------------------------------------------- */
+@layer base {
+  * {
+    /* @apply border; */
+  }
+
+  body {
+    @apply bg-gradient-to-br from-pink-50 via-white to-purple-50 text-gray-900;
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+  }
+}
+
+/* ----------------------------------------------------
+   UTILITIES (AAPKA CODE COMPLETELY MERGED)
+----------------------------------------------------- */
+@layer utilities {
+  /* Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+
+  /* Glass morphism */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Smooth transition */
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* ----------------------------------------------------
+   EXTRA STYLES (NO CHANGE – SAME AS YOUR CODE)
+----------------------------------------------------- */
+
+/* Loader */
+.loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--color-primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Image zoom effect */
+.zoom-image {
+  overflow: hidden;
+}
+
+.zoom-image img {
+  transition: transform 0.5s ease;
+}
+
+.zoom-image:hover img {
+  transform: scale(1.1);
+}
