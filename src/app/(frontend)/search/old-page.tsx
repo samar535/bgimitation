@@ -3,11 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { getProducts, getCategories } from '@/lib/firestore';
+import { getProducts, getCategories, getPopularSearches } from '@/lib/firestore';
 import { ProductGrid } from '@/components/product/ProductGrid';
 import { Loader } from '@/components/ui/Loader';
 import { Search, ArrowLeft, Filter, SortAsc, X, Sliders, TrendingUp, Star, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { FrontendLayout } from '@/components/layout/FrontendLayout';
 
 export default function SearchPage() {
   const router = useRouter();
@@ -22,23 +23,9 @@ export default function SearchPage() {
   const [sortBy, setSortBy] = useState('relevance');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [showFilters, setShowFilters] = useState(false);
+  const [popularSearches, setPopularSearches] = useState<string[]>([]);
 
   const [categories, setCategories] = useState<string[]>(['All']);
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const data = await getProducts();
-  //       setAllProducts(data);
-  //     } catch (error) {
-  //       console.error('Error fetching products:', error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchProducts();
-  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +61,10 @@ export default function SearchPage() {
         }
   
         setFilteredProducts(results);
+
+        const popularData = await getPopularSearches();
+        setPopularSearches(popularData.map(search => search.term));
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -141,88 +132,96 @@ export default function SearchPage() {
     );
   }
 
-  const popularSearches = ['Bridal Set', 'Gold Necklace', 'Pearl Earrings', 'Diamond Ring', 'Kundan', 'Choker', 'Jhumka', 'Bangles Set'];
+  
 
   return (
+    <FrontendLayout>
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Hero Search Section */}
-      <div className="relative bg-gradient-to-br from-primary via-secondary to-accent overflow-hidden">
-        {/* Pattern Overlay */}
-        <div className="absolute inset-0 opacity-10">
+      <div className="relative bg-gradient-to-br from-primary via-secondary to-accent py-8 md:py-16 overflow-hidden">
+        {/* Subtle Pattern Overlay */}
+        <div className="absolute inset-0 opacity-15">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
+            backgroundSize: '50px 50px'
           }}></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 py-16">
-          {/* Back Button */}
+        <div className="relative max-w-7xl mx-auto px-4">
+          {/* Back Button - Compact */}
           <Link 
             href="/"
-            className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-8 transition-colors group"
+            className="inline-flex items-center gap-2 text-white px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full mb-6 transition-colors"
           >
-            <div className="p-2 rounded-full bg-white/20 backdrop-blur-sm group-hover:bg-white/30 transition-all">
-              <ArrowLeft size={20} />
-            </div>
-            <span className="font-medium">Back to Home</span>
+            <ArrowLeft size={18} />
+            <span className="text-sm font-medium">Back to Home</span>
           </Link>
 
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6 text-white">
-              <Sparkles size={16} />
-              <span className="text-sm font-semibold">Explore Premium Collection</span>
+          <div className="text-center">
+            {/* Badge - Smaller */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full mb-4 text-white">
+              <Sparkles size={14} />
+              <span className="text-xs font-semibold uppercase tracking-wider">Premium Collection</span>
             </div>
 
-            {/* Heading */}
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 font-serif drop-shadow-lg">
-              Discover Your Perfect Jewelry
+            {/* Heading - Tight Spacing */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 font-serif drop-shadow-md">
+              Find Your Perfect Piece
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-white/90 text-lg md:text-xl mb-10">
-              Search from thousands of handcrafted designs
+            {/* Subtitle - Compact */}
+            <p className="text-white/90 text-base md:text-lg mb-8 max-w-2xl mx-auto">
+              Discover handcrafted imitation jewelry for every occasion
             </p>
 
-            {/* Search Bar */}
-            <form onSubmit={handleSearch} className="relative">
+            {/* Search Bar - Slimmer */}
+            <form onSubmit={handleSearch} className="relative max-w-3xl mx-auto mb-10">
               <div className="relative group">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors" size={24} />
+                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-white transition-colors" size={22} />
                 
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search necklaces, earrings, bangles..."
-                  className="w-full pl-16 pr-40 py-6 rounded-2xl text-lg text-gray-900 bg-white/95 backdrop-blur-sm border-0 shadow-2xl focus:bg-white focus:ring-4 focus:ring-white/50 outline-none transition-all"
+                  placeholder="Search necklaces, earrings, bridal sets..."
+                  className="w-full pl-14 pr-36 py-4 rounded-full text-base text-gray-900 bg-white shadow-2xl focus:outline-none focus:ring-4 focus:ring-white/30 transition-all"
                   autoFocus
                 />
                 
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-8 py-4 bg-dark text-white rounded-xl hover:bg-dark/90 transition-all font-semibold shadow-lg"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-7 py-3 bg-dark text-white rounded-full hover:bg-dark/90 transition-all font-semibold text-sm"
                 >
                   Search
                 </button>
               </div>
-
-              {/* Quick Tags */}
-              <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
-                {['Bridal', 'Gold', 'Pearl', 'Diamond', 'Kundan'].map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => {
-                      setSearchTerm(tag);
-                      router.push(`/search?q=${encodeURIComponent(tag)}`);
-                    }}
-                    className="px-6 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 transition-all text-sm font-medium"
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
             </form>
+
+            {/* Popular Searches - Compact Grid */}
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-xl">
+                <div className="flex items-center gap-2 mb-4">
+                  <TrendingUp size={20} className="text-primary" />
+                  <h3 className="text-lg font-bold text-dark">
+                    Popular Searches
+                  </h3>
+                </div>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {popularSearches.map((term) => (
+                    <button
+                      key={term}
+                      onClick={() => {
+                        setSearchTerm(term);
+                        router.push(`/search?q=${encodeURIComponent(term)}`);
+                      }}
+                      className="px-4 py-2.5 bg-gray-50 hover:bg-primary/10 rounded-lg text-sm font-medium text-gray-700 hover:text-secondary transition-all"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -281,7 +280,7 @@ export default function SearchPage() {
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all ${
+                        className={`w-full text-left px-4 py-3 cursor-pointer rounded-xl font-medium transition-all ${
                           selectedCategory === cat
                             ? 'bg-secondary text-white shadow-lg'
                             : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
@@ -328,7 +327,7 @@ export default function SearchPage() {
                         <button
                           key={price}
                           onClick={() => setPriceRange({ min: 0, max: price })}
-                          className="px-3 py-2 bg-gray-50 hover:bg-primary hover:text-white rounded-lg text-sm font-medium transition-colors"
+                          className="px-3 py-2 bg-gray-50 cursor-pointer hover:bg-primary hover:text-white rounded-lg text-sm font-medium transition-colors"
                         >
                           Under ₹{price}
                         </button>
@@ -354,7 +353,7 @@ export default function SearchPage() {
                       <button
                         key={option.value}
                         onClick={() => setSortBy(option.value)}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all ${
+                        className={`w-full flex items-center gap-3 px-4 py-3 cursor-pointer rounded-xl font-medium transition-all ${
                           sortBy === option.value
                             ? 'bg-primary text-white shadow-lg'
                             : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
@@ -399,11 +398,11 @@ export default function SearchPage() {
                 We couldn't find any products matching "{query}". Try different keywords or browse all products.
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
-                <Button onClick={clearFilters}>
+                <Button onClick={clearFilters} className='cursor-pointer'>
                   Clear Filters
                 </Button>
                 <Link href="/products">
-                  <Button variant="outline">
+                  <Button variant="outline" className='cursor-pointer'>
                     Browse All Products
                   </Button>
                 </Link>
@@ -424,35 +423,6 @@ export default function SearchPage() {
             </p>
           </div>
         )}
-
-        {/* Popular Searches */}
-        {(!searchTerm && !query) || filteredProducts.length === 0 ? (
-          <div className="mt-12 bg-white rounded-3xl p-8 shadow-lg">
-            <div className="flex items-center gap-2 mb-6">
-              <TrendingUp size={24} className="text-primary" />
-              <h3 className="text-2xl font-bold text-dark font-serif">
-                Popular Searches
-              </h3>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {popularSearches.map((term) => (
-                <button
-                  key={term}
-                  onClick={() => {
-                    setSearchTerm(term);
-                    router.push(`/search?q=${encodeURIComponent(term)}`);
-                  }}
-                  className="px-6 py-4 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-primary/10 hover:to-secondary/10 rounded-xl shadow-md hover:shadow-lg transition-all text-left group"
-                >
-                  <p className="font-semibold text-dark group-hover:text-secondary transition-colors">
-                    {term}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-1">Trending</p>
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : null}
 
         {/* Categories Quick Links */}
         {filteredProducts.length > 0 && (
@@ -477,5 +447,6 @@ export default function SearchPage() {
         )}
       </div>
     </div>
+    </FrontendLayout>
   );
 }
