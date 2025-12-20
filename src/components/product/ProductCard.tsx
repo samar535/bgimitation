@@ -79,54 +79,45 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
+      <div className="p-2 md:p-4">
         <h3 className={`text-lg font-semibold mb-1 line-clamp-2 ${isSoldOut ? 'text-gray-500' : 'text-gray-800 hover:text-secondary'}`}>
           {product.name}
         </h3>
-
-        <div className="flex gap-2 items-center mb-3">
-          {/* <p className="text-sm text-gray-500">{product.category}</p> */}
-          {/* <div className="text-right"> */}
-            <span className="text-xl font-bold text-secondary block">
-              {formatPrice(product.price)}
-            </span>
-            {product.originalPrice > product.price && (
-              <span className="text-xs text-gray-400 line-through">
+        
+        {/* Price + Discount*/}
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span className="text-lg md:text-2xl font-bold text-secondary">
+            {formatPrice(product.price)}
+          </span>
+          {product.originalPrice > product.price && (
+            <>
+              <span className="text-sm md:text-base text-gray-500 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
-            )}
-            
-            {discount > 0 && (
-              <div className="mb-3">
-                <span className="text-xs font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">
-                  (-{discount}% OFF)
-                </span>
-              </div>
-            )}
-          {/* </div> */}
+              <span className="text-xs md:text-sm font-bold text-green-600 px-2 py-1 rounded-full">
+                (-{discount}%)
+              </span>
+            </>
+          )}
         </div>
-
-
-        {/* {product.customizable && (
-          <div className="mb-3">
-            <span className="text-xs text-primary bg-purple-100 px-3 py-1 rounded-full">
-              ✨ Customizable
-            </span>
-          </div>
-        )} */}
-
-        {/* WhatsApp Button - Sold Out पर डिसेबल */}
+        
+        {/* WhatsApp Button */}
         <button
           onClick={handleWhatsAppOrder}
           disabled={isSoldOut}
-          className={`w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`w-full py-2.5 rounded-lg font-medium text-white transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
             isSoldOut
               ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-secondary hover:bg-secondary-dark hover:shadow-lg'
+              : 'bg-secondary hover:bg-secondary-dark'
           }`}
         >
-          <Phone size={18} />
-          {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
+          <Phone className="w-4 sm:w-5 h-4 sm-h-5" />
+          <span className="hidden xs:inline">
+            {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
+          </span>
+          <span className="xs:hidden">
+            {isSoldOut ? 'Out' : 'WhatsApp'}
+          </span>
         </button>
       </div>
     </div>
