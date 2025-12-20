@@ -136,12 +136,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl mx-auto">
       {/* Images */}
-      <ImageUploader 
-        images={images}
-        onImagesChange={setImages}
-      />
+      <div>
+        <ImageUploader 
+          images={images}
+          onImagesChange={setImages}
+        />
+      </div>
 
       {/* Basic Info */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -159,7 +161,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
             Category
           </label>
           {loadingCategories ? (
-            <p>Loading categories...</p>
+            <p className="text-gray-500">Loading categories...</p>
           ) : (
             <select
               name="category"
@@ -188,14 +190,14 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           name="description"
           value={formData.description}
           onChange={handleInputChange}
-          rows={4}
-          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none transition-colors"
-          placeholder="Describe the product..."
+          rows={5}
+          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none transition-colors resize-none"
+          placeholder="Describe the product in detail..."
         />
       </div>
 
       {/* Pricing */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
         <Input
           label="Current Price (₹)"
           type="number"
@@ -204,7 +206,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           onChange={handleInputChange}
           required
           min="1"
-          placeholder="e.g., 1599"
+          placeholder="1599"
         />
 
         <Input
@@ -215,6 +217,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           onChange={handleInputChange}
           required
           min="0"
+          placeholder="2499"
         />
 
         <Input
@@ -225,6 +228,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           onChange={handleInputChange}
           required
           min="0"
+          placeholder="50"
         />
       </div>
 
@@ -233,7 +237,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Tags
         </label>
-        <div className="flex gap-2 mb-2">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="text"
             value={tagInput}
@@ -242,11 +246,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
             placeholder="Add tag (e.g., New, Trending)"
             className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none transition-colors"
           />
-          <Button type="button" onClick={addTag}>
+          <Button type="button" onClick={addTag} className="sm:w-auto">
             Add Tag
           </Button>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-3">
           {formData.tags.map((tag) => (
             <span
               key={tag}
@@ -266,34 +270,34 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
       </div>
 
       {/* Checkboxes */}
-      <div className="flex flex-wrap gap-6">
-        <label className="flex items-center gap-2 cursor-pointer">
+      <div className="flex flex-col sm:flex-row gap-6">
+        <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
             checked={formData.inStock}
             onChange={() => handleCheckboxChange('inStock')}
             className="w-5 h-5 text-primary rounded focus:ring-primary"
           />
-          <span className="text-sm font-medium">In Stock</span>
+          <span className="text-base font-medium">In Stock</span>
         </label>
 
-        <label className="flex items-center gap-2 cursor-pointer">
+        {/* <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
             checked={formData.customizable}
             onChange={() => handleCheckboxChange('customizable')}
             className="w-5 h-5 text-primary rounded focus:ring-primary"
           />
-          <span className="text-sm font-medium">Customizable</span>
-        </label>
+          <span className="text-base font-medium">Customizable</span>
+        </label> */}
       </div>
 
       {/* Submit Buttons */}
-      <div className="flex gap-4 pt-4">
+      <div className="flex flex-col sm:flex-row gap-4 pt-6">
         <Button
           type="submit"
           loading={loading}
-          className="flex-1"
+          className="flex-1 order-1 sm:order-none"
         >
           {isEdit ? 'Update Product' : 'Add Product'}
         </Button>
@@ -301,6 +305,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           type="button"
           variant="outline"
           onClick={() => router.back()}
+          className="flex-1"
         >
           Cancel
         </Button>

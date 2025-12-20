@@ -117,7 +117,7 @@ export default function ProductsPage() {
 
   return (
     <div className="p-4 lg:p-8">
-      <div className="flex flex-row items-center justify-between mb-8 gap-4">
+      <div className="flex flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold">Products</h1>
           <p className="text-gray-600 mt-1">
@@ -133,7 +133,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Filters */}
-      <div className="mb-8 flex flex-col sm:flex-row gap-4">
+      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row gap-4">
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -220,10 +220,10 @@ export default function ProductsPage() {
       </div>
 
       {/* Mobile Cards */}
-      <div className="lg:hidden grid gap-6">
+      <div className="lg:hidden grid gap-4">
         {displayedProducts.map((product) => (
           <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="flex gap-4 p-4">
+            <div className="flex gap-4 p-3">
               <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                 <CldImage
                   width={96}
@@ -252,7 +252,7 @@ export default function ProductsPage() {
                 </div>
               </div>
             </div>
-            <div className="px-4 pb-4 flex gap-3">
+            <div className="p-3 pt-0 flex gap-3">
               <Link href={`/admin/products/edit/${product.id}`} className="flex-1">
                 <Button variant="outline" className="w-full border-green-300! text-green-700! px-4! sm:px-6! py-2! sm:py-3!">
                   <Edit size={18} />

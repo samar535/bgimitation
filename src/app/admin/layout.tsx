@@ -69,7 +69,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative">
-      {/* Sidebar - फुल हाइट फिक्स्ड */}
+      {/* Sidebar */}
       <aside className={`${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } lg:translate-x-0 w-64 bg-dark text-white flex flex-col fixed inset-y-0 left-0 z-50 transition-transform duration-300`}>
@@ -103,8 +103,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </div>
 
-        {/* Navigation - स्क्रॉलेबल अगर ज़्यादा आइटम हों */}
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        {/* Navigation */}
+        {/* <nav className="flex-1 p-4 space-y-2 overflow-y-auto"> */}
+        <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => {
             const isActive = pathname === item.href || 
             (item.href !== '/admin' && pathname.startsWith(item.href));
