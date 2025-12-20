@@ -310,7 +310,7 @@ export default function CategoriesPage() {
             </div>
 
             {/* Modal Body */}
-            <div className="p-8">
+            <div className="p-4 sm:p-8">
                 <div className="space-y-6">
                     {/* Category Name */}
                     <div>
@@ -333,7 +333,7 @@ export default function CategoriesPage() {
                         Category Image
                       </label>
 
-                      <div className="flex flex-col md:flex-row gap-8 items-start">
+                      <div className="flex flex-row gap-4 sm:gap-8 items-start">
                         {/* Left: Preview */}
                         <div className="">
                           <p className="text-xs text-gray-500 mb-2">Preview</p>
@@ -431,16 +431,17 @@ export default function CategoriesPage() {
                 <div className="flex gap-4 mt-8">
                     <Button
                     onClick={editingCategory ? handleUpdate : handleAdd}
-                    className="flex-1"
+                    className="flex-1 px-4! sm:px-8! py-2! sm:py-3!"
                     size="lg"
                     >
-                    <Save size={20} />
-                    {editingCategory ? 'Update Category' : 'Create Category'}
+                      <Save size={20} />
+                      {editingCategory ? 'Update Category' : 'Create Category'}
                     </Button>
                     <Button
                     variant="outline"
                     onClick={resetForm}
                     size="lg"
+                    className='px-4! sm:px-8! py-2! sm:py-3!'
                     >
                     Cancel
                     </Button>
