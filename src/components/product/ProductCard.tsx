@@ -80,13 +80,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       {/* Product Info */}
       <div className="p-2 md:p-4">
-        <h3 className={`text-lg font-semibold mb-1 line-clamp-2 ${isSoldOut ? 'text-gray-500' : 'text-gray-800 hover:text-secondary'}`}>
+        <h3 className={`text-md md:text-lg font-semibold mb-1 line-clamp-2 ${isSoldOut ? 'text-gray-500' : 'text-gray-800 hover:text-secondary'}`}>
           {product.name}
         </h3>
         
         {/* Price + Discount*/}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <span className="text-lg md:text-2xl font-bold text-secondary">
+          <span className="text-md md:text-2xl font-bold text-secondary">
             {formatPrice(product.price)}
           </span>
           {product.originalPrice > product.price && (
@@ -94,7 +94,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span className="text-sm md:text-base text-gray-500 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
-              <span className="text-xs md:text-sm font-bold text-green-600 px-2 py-1 rounded-full">
+              <span className="text-xs md:text-sm font-bold text-green-600">
                 (-{discount}%)
               </span>
             </>
