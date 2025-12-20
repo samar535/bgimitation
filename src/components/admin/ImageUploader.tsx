@@ -66,24 +66,31 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
               height={400}
               src={url}
               alt={`Product ${index + 1}`}
-              className="object-cover"
+              className="object-cover w-full h-full"
               crop="fill"
               gravity="auto"
             />
+
+            {/* Cross Button */}
             <button
               onClick={() => removeImage(index)}
-              className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+              className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full shadow-lg transition-all 
+                        opacity-100 md:opacity-0 md:group-hover:opacity-100 
+                        hover:scale-110 hover:bg-red-600"
             >
               <X size={16} />
             </button>
+
+            {/* Main Badge */}
             {index === 0 && (
-              <div className="absolute bottom-2 left-2 px-2 py-1 bg-primary text-white text-xs rounded">
+              <div className="absolute bottom-2 left-2 px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg shadow">
                 Main
               </div>
             )}
           </div>
         ))}
       </div>
+      
 
       {/* Upload Button */}
       {images.length < maxImages && (
