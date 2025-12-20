@@ -26,10 +26,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div 
-      className={`group relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${
+      className={`group relative bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ${
         isSoldOut 
           ? 'opacity-70 cursor-not-allowed' 
-          : 'hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
+          : 'hover:shadow-xl hover:-translate-y-2 cursor-pointer'
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -59,33 +59,31 @@ export default function WishlistPage() {
     <div className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
-                <Heart size={24} className="text-secondary" fill="currentColor" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold text-dark font-serif">
-                  My Wishlist
-                </h1>
-                <p className="text-gray-600">
-                  {items.length} {items.length === 1 ? 'item' : 'items'} saved
-                </p>
-              </div>
+        <div className="flex items-center justify-between mb-6 md:mb-10">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center">
+              <Heart size={24} className="text-secondary" fill="currentColor" />
             </div>
-
-            {items.length > 0 && (
-              <Button
-                variant="outline"
-                onClick={handleClearWishlist}
-                className="hidden md:flex"
-              >
-                <Trash2 size={18} />
-                Clear All
-              </Button>
-            )}
+            <div>
+              <h1 className="text-2xl md:text-4xl font-bold text-dark font-serif">
+                My Wishlist
+              </h1>
+              <p className="text-gray-600">
+                {items.length} {items.length === 1 ? 'item' : 'items'} saved
+              </p>
+            </div>
           </div>
+
+          {items.length > 0 && (
+            <Button
+              variant="outline"
+              onClick={handleClearWishlist}
+              className="hidden md:flex"
+            >
+              <Trash2 size={18} />
+              Clear All
+            </Button>
+          )}
         </div>
 
         {/* Empty State */}
@@ -122,7 +120,7 @@ export default function WishlistPage() {
             </div>
 
             {/* Products Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

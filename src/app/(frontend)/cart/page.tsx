@@ -69,8 +69,7 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <div className="p-8">
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden p-4 md:p-8">
               {items.map((item, index) => (
                 <div key={item.id} className="flex items-center gap-6 py-6 border-b last:border-0">
                   <div className="relative w-32 h-32 rounded-xl overflow-hidden shadow-md">
@@ -116,13 +115,12 @@ export default function CartPage() {
                 <Button 
                   onClick={handleWhatsApp} 
                   size="lg" 
-                  className="w-full py-6 text-lg font-bold flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700"
+                  className="w-full px-4! md:px-8! py-3! md:py-6! text-lg font-bold flex items-center justify-center gap-3 bg-green-600 hover:bg-green-700"
                 >
                   <Phone size={24} />
                   Send Order to WhatsApp
                 </Button>
               </div>
-            </div>
           </div>
         )}
       </div>
