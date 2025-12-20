@@ -53,7 +53,7 @@ export default function EditProductPage() {
   }
 
   return (
-    <div className="p-8">
+    <div>
       {/* Back Button */}
       <Link 
         href="/admin/products"
@@ -70,7 +70,7 @@ export default function EditProductPage() {
       </div>
       
       {/* Form - सिर्फ़ product लोड होने पर दिखाओ */}
-      <div className="bg-white rounded-2xl shadow-lg p-8">
+      <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-8">
         <ProductForm product={product} isEdit={true} />
       </div>
     </div>

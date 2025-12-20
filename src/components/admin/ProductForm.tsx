@@ -190,8 +190,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           name="description"
           value={formData.description}
           onChange={handleInputChange}
-          rows={5}
-          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none transition-colors resize-none"
+          //rows={4}  
+          className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none transition-colors resize-none min-h-[90px] md:min-h-[120px] lg:min-h-[150px]"
           placeholder="Describe the product in detail..."
         />
       </div>
@@ -237,7 +237,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Tags
         </label>
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-row gap-3">
           <input
             type="text"
             value={tagInput}
@@ -246,7 +246,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
             placeholder="Add tag (e.g., New, Trending)"
             className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary outline-none transition-colors"
           />
-          <Button type="button" onClick={addTag} className="sm:w-auto">
+          <Button type="button" onClick={addTag} className="sm:w-auto px-3 sm:px-6 py-3">
             Add Tag
           </Button>
         </div>
@@ -297,7 +297,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
         <Button
           type="submit"
           loading={loading}
-          className="flex-1 order-1 sm:order-none"
+          className="flex-1 order-1 sm:order-none px-3! sm:px-6!"
         >
           {isEdit ? 'Update Product' : 'Add Product'}
         </Button>
@@ -305,7 +305,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           type="button"
           variant="outline"
           onClick={() => router.back()}
-          className="flex-1"
+          className="flex-1 px-3! sm:px-6!"
         >
           Cancel
         </Button>
