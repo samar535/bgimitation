@@ -309,14 +309,14 @@ export default function CategoriesPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg mb-1">{category.name}</h3>
                   <p className="text-sm text-gray-500 mb-1">{category.slug}</p>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-xl">
+                  <div className="grid grid-cols-2 gap-4 mb-1">
+                    <div className="flex items-center gap-3 px-2 py-1 bg-gray-50 rounded-xl">
                       <p className="text-xl font-bold text-secondary">
                         {category.productCount || 0}
                       </p>
                       <p className="text-xs text-gray-600">Products</p>
                     </div>
-                    <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-xl">
+                    <div className="flex items-center gap-3 px-2 py-1 bg-gray-50 rounded-xl">
                       <p className="text-xl font-bold text-primary">
                         #{category.order}
                       </p>
