@@ -13,11 +13,6 @@ export default function AdminDashboard() {
     outOfStock: 0,
   });
 
-  // type Order = {
-  //   status: string;
-  //   totalAmount: number;
-  //   orderDate?: any;
-  // };
   const [orders, setOrders] = useState<any[]>([]);
 
 
@@ -66,7 +61,7 @@ export default function AdminDashboard() {
     <div className=''>
       <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         <StatCard
           icon={Package}
           label="Total Products"
@@ -91,7 +86,7 @@ export default function AdminDashboard() {
         Orders Overview
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <StatCard
           icon={Package}
           label="Total Orders"
