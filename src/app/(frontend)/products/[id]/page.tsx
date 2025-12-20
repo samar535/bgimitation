@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { Phone, Heart, Star, Share2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Phone, Heart, Star, Share2, ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
 import { getProduct, getProductsByCategory } from '@/lib/firestore';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
@@ -12,6 +12,7 @@ import { useWishlistStore } from '@/store/useWishlistStore';
 import toast from 'react-hot-toast';
 import { CldImage } from 'next-cloudinary';
 import { FrontendLayout } from '@/components/layout/FrontendLayout';
+import { useCartStore } from '@/store/useCartStore';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -53,6 +54,17 @@ export default function ProductDetailPage() {
       addItem(product.id);
       toast.success('Added to wishlist');
     }
+  };
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    useCartStore.getState().addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+    });
+    toast.success('Added to cart!');
   };
 
   const handleShare = () => {
@@ -228,21 +240,6 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
             
-            {/* Rating */}
-            <div className="flex items-center gap-2 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  size={20}
-                  fill={i < Math.floor(product.rating) ? '#C9A961' : 'none'}
-                  stroke={i < Math.floor(product.rating) ? '#C9A961' : '#ccc'}
-                />
-              ))}
-              <span className="text-gray-600">
-                {product.rating} ({product.reviewCount || 0} reviews)
-              </span>
-            </div>
-
             {/* Price */}
             <div className="flex items-center gap-4 mb-6">
               <span className="text-4xl font-bold text-secondary">
@@ -261,28 +258,39 @@ export default function ProductDetailPage() {
             </p>
 
             {/* Action Buttons */}
-            <div className="flex gap-4 mb-8">
+            <div className="flex flex-col md:flex-row gap-4 mb-8">
+              <div className="flex gap-4 order-1 md:order-2 justify-center">
+                <Button 
+                  variant="outline" 
+                  onClick={handleWishlist}
+                  size="lg"
+                >
+                  <Heart 
+                    size={20} 
+                    fill={inWishlist ? '#8B3A62' : 'none'}
+                    stroke={inWishlist ? '#8B3A62' : 'currentColor'}
+                  />
+                </Button>
+
+                <Button
+                  variant="outline" 
+                  onClick={handleAddToCart}
+                  size="lg"
+                >
+                  <ShoppingCart size={18} />
+                </Button>
+
+                <Button variant="outline" onClick={handleShare} size="lg">
+                  <Share2 size={20} />
+                </Button>
+              </div>
               <Button
                 onClick={() => window.open(getWhatsAppURL(product), '_blank')}
-                className="flex-1"
+                className="flex-1 order-2 md:order-1"
                 size="lg"
               >
                 <Phone size={20} />
                 Order on WhatsApp
-              </Button>
-              <Button 
-                variant="outline" 
-                onClick={handleWishlist}
-                size="lg"
-              >
-                <Heart 
-                  size={20} 
-                  fill={inWishlist ? '#8B3A62' : 'none'}
-                  stroke={inWishlist ? '#8B3A62' : 'currentColor'}
-                />
-              </Button>
-              <Button variant="outline" onClick={handleShare} size="lg">
-                <Share2 size={20} />
               </Button>
             </div>
 

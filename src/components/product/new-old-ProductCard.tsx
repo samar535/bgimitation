@@ -74,11 +74,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const discount = calculateDiscount(product.originalPrice, product.price);
 
   return (
-    <div 
-      className={`group relative bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ${
-        isSoldOut 
-          ? 'opacity-70 cursor-not-allowed' 
-          : 'hover:shadow-2xl hover:-translate-y-2 cursor-pointer'
+    <div
+      className={`group relative bg-white/95 rounded-2xl overflow-hidden shadow-md transition-all duration-300 ${
+        isSoldOut ? 'opacity-70' : 'hover:shadow-xl hover:-translate-y-1'
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -98,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Wishlist + Cart Icons */}
-      <div className="absolute top-10 right-3 z-10 grid gap-2">
+      <div className="absolute top-3 right-2 z-10 grid gap-2">
         <button
           onClick={handleWishlist}
           className="p-2 bg-white rounded-full shadow-md hover:scale-110 transition-all"
@@ -120,7 +118,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </div>
 
       {/* Image Slider - Sold Out पर Link नहीं */}
-      <div className="relative w-full h-80 overflow-hidden bg-gray-100">
+      <div className="relative w-full h-auto sm:h-80 md:h-96 lg:h-[420px] bg-gray-50">
         {isSoldOut ? (
           // Sold Out Overlay
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 pointer-events-none">
@@ -131,7 +129,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <Link href={`/products/${product.id}`} className="absolute inset-0 z-10" />
         )}
 
-        {/* स्लाइडर — हमेशा दिखेगा */}
+         {/* slider */}
         <div 
           className="flex transition-transform duration-1000 ease-in-out h-full"
           style={{ transform: `translateX(-${currentImage * 100}%)` }}
@@ -187,55 +185,49 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
       </div>
 
-      {/* Product Info */}
-      <div className="p-4">
-        <h3 className={`text-lg font-semibold mb-1 line-clamp-2 ${isSoldOut ? 'text-gray-500' : 'text-gray-800 hover:text-secondary'}`}>
-          {product.name}
-        </h3>
+      {/* Product Info - Responsive & Compact */}
+      <div className="p-2 md:p-4">
+        {/* Name */}
+        <Link href={`/products/${product.id}`} className={isSoldOut ? 'pointer-events-none' : ''}>
+          <h3 className="text-base md:text-lg font-serif font-medium text-gray-900 mb-1 line-clamp-2 hover:text-secondary transition-colors">
+            {product.name}
+          </h3>
+        </Link>
 
-        <div className="flex gap-2 items-center mb-3">
-          {/* <p className="text-sm text-gray-500">{product.category}</p> */}
-          {/* <div className="text-right"> */}
-            <span className="text-xl font-bold text-secondary block">
-              {formatPrice(product.price)}
-            </span>
-            {product.originalPrice > product.price && (
-              <span className="text-xs text-gray-400 line-through">
+        {/* Price + Discount*/}
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
+          <span className="text-lg md:text-2xl font-bold text-secondary">
+            {formatPrice(product.price)}
+          </span>
+          {product.originalPrice > product.price && (
+            <>
+              <span className="text-sm md:text-base text-gray-500 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
-            )}
-            
-            {discount > 0 && (
-              <div className="mb-3">
-                <span className="text-xs font-semibold text-green-600 bg-green-100 px-3 py-1 rounded-full">
-                  (-{discount}% OFF)
-                </span>
-              </div>
-            )}
-          {/* </div> */}
+              <span className="text-xs md:text-sm font-bold text-green-600 px-2 py-1 rounded-full">
+                (-{discount}%)
+              </span>
+            </>
+          )}
         </div>
 
-
-        {/* {product.customizable && (
-          <div className="mb-3">
-            <span className="text-xs text-primary bg-purple-100 px-3 py-1 rounded-full">
-              ✨ Customizable
-            </span>
-          </div>
-        )} */}
-
-        {/* WhatsApp Button - Sold Out पर डिसेबल */}
+        {/* WhatsApp Button */}
         <button
           onClick={handleWhatsAppOrder}
           disabled={isSoldOut}
-          className={`w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`w-full py-2.5 rounded-lg font-medium text-white transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
             isSoldOut
               ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-secondary hover:bg-secondary-dark hover:shadow-lg'
+              : 'bg-secondary hover:bg-secondary-dark'
           }`}
         >
-          <Phone size={18} />
-          {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
+          <Phone className="w-4 sm:w-5 h-4 sm-h-5" />
+          <span className="hidden xs:inline">
+            {isSoldOut ? 'Sold Out' : 'Order on WhatsApp'}
+          </span>
+          <span className="xs:hidden">
+            {isSoldOut ? 'Out' : 'WhatsApp'}
+          </span>
         </button>
       </div>
     </div>
