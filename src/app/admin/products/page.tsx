@@ -117,7 +117,7 @@ export default function ProductsPage() {
 
   return (
     <div className="p-4 lg:p-8">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
+      <div className="flex flex-row items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold">Products</h1>
           <p className="text-gray-600 mt-1">
@@ -224,7 +224,7 @@ export default function ProductsPage() {
         {displayedProducts.map((product) => (
           <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="flex gap-4 p-4">
-              <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+              <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                 <CldImage
                   width={96}
                   height={96}
@@ -235,31 +235,33 @@ export default function ProductsPage() {
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                <p className="text-sm text-gray-500 mb-2">{product.category}</p>
-                <p className="text-xl font-bold text-secondary mb-2">₹{product.price}</p>
-                <div className="mb-3">
-                  {product.inStock && product.stockQuantity > 0 ? (
-                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                      {product.stockQuantity} in stock
-                    </span>
-                  ) : (
-                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
-                      Out of Stock
-                    </span>
-                  )}
+                <p className="text-sm text-gray-500 mb-1">{product.category}</p>
+                <div className="flex justify-between">
+                  <p className="text-xl font-bold text-secondary">₹{product.price}</p>
+                  <div>
+                    {product.inStock && product.stockQuantity > 0 ? (
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
+                        {product.stockQuantity} in stock
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800">
+                        Out of Stock
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
             <div className="px-4 pb-4 flex gap-3">
               <Link href={`/admin/products/edit/${product.id}`} className="flex-1">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full border-green-300! text-green-700! px-4! sm:px-6! py-2! sm:py-3!">
                   <Edit size={18} />
                   Edit
                 </Button>
               </Link>
               <Button 
                 variant="outline" 
-                className="flex-1 border-red-200 text-red-600 hover:bg-red-50"
+                className="flex-1 border-red-200 px-4! sm:px-6! py-2! sm:py-3! border-red-700! text-red-700! hover:bg-red-50"
                 onClick={() => handleDelete(product.id)}
               >
                 <Trash2 size={18} />
