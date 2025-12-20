@@ -191,6 +191,7 @@ export default function CategoriesPage() {
           </div>
         </div>
 
+        <div className='hidden lg:block'>
         {/* Categories Grid */}
         {categories.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -283,6 +284,66 @@ export default function CategoriesPage() {
             </div>
           </div>
         )}
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="md:hidden grid gap-4">
+          {categories.map((category) => (
+            <div key={category.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="flex gap-4 p-3">
+                <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                  {category.imageUrl ? (
+                    <CldImage
+                      width={96}
+                      height={96}
+                      src={category.imageUrl}
+                      alt={category.name}
+                      crop="fill"
+                    />
+                  ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <p className="text-gray-500">No image</p>
+                      </div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-1">{category.name}</h3>
+                  <p className="text-sm text-gray-500 mb-1">{category.slug}</p>
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-xl">
+                      <p className="text-xl font-bold text-secondary">
+                        {category.productCount || 0}
+                      </p>
+                      <p className="text-xs text-gray-600">Products</p>
+                    </div>
+                    <div className="flex items-center gap-3 p-2 bg-gray-50 rounded-xl">
+                      <p className="text-xl font-bold text-primary">
+                        #{category.order}
+                      </p>
+                      <p className="text-xs text-gray-600">Order</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-3 pt-0 flex gap-3">
+                <Button
+                  onClick={() => startEdit(category)}
+                  variant="outline" className="w-full border-green-300! text-green-700! px-4! sm:px-6! py-2! sm:py-3!">
+                    <Edit size={18} />
+                    Edit
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="flex-1 border-red-200 px-4! sm:px-6! py-2! sm:py-3! border-red-700! text-red-700! hover:bg-red-50"
+                  onClick={() => handleDelete(category.id, category.name)}
+                >
+                  <Trash2 size={18} />
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Add/Edit Modal */}
