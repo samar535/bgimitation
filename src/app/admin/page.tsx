@@ -51,7 +51,7 @@ export default function AdminDashboard() {
           <p className="text-3xl font-bold" style={{ color }}>{value}</p>
         </div>
         <div className="p-4 rounded-full" style={{ backgroundColor: color + '20' }}>
-          <Icon size={32} style={{ color }} />
+          <Icon className="w-4 sm:w-5 h-4 sm-h-5" style={{ color }} />
         </div>
       </div>
     </div>
