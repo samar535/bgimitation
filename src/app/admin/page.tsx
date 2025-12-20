@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   }, []);
 
   const StatCard = ({ icon: Icon, label, value, color }: any) => (
-    <div className="bg-white p-6 rounded-2xl shadow-lg">
+    <div className="bg-white p-3 sm:p-6 rounded-2xl shadow-lg">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-gray-600 text-sm mb-1">{label}</p>

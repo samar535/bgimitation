@@ -116,7 +116,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="p-4 lg:p-8">
+    <div>
       <div className="flex flex-row items-center justify-between mb-6 sm:mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold">Products</h1>
@@ -220,7 +220,7 @@ export default function ProductsPage() {
       </div>
 
       {/* Mobile Cards */}
-      <div className="lg:hidden grid gap-4">
+      <div className="md:hidden grid gap-4">
         {displayedProducts.map((product) => (
           <div key={product.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
             <div className="flex gap-4 p-3">

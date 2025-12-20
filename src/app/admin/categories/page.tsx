@@ -137,16 +137,17 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="p-8 min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-bold text-dark mb-2 font-serif">
-                Categories Management
+              <h1 className="text-3xl font-bold text-dark mb-2 font-serif">
+                Categories <span className='hidden sm:inline'>Management</span>
               </h1>
-              <p className="text-gray-600">Organize your products into categories</p>
+              <p className="text-gray-600 hidden sm:inline">Organize your products into categories</p>
+              <p className="text-gray-600 inline sm:hidden">manage categories</p>
             </div>
             <Button onClick={() => setShowAddModal(true)} size="lg">
               <Plus size={20} />
@@ -155,42 +156,36 @@ export default function CategoriesPage() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-primary to-accent text-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm mb-1">Total Categories</p>
-                  <p className="text-4xl font-bold">{categories.length}</p>
-                </div>
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                  <Grid3x3 size={32} />
-                </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-primary to-accent text-white rounded-2xl p-3 sm:p-6 shadow-lg flex items-center justify-between">
+              <div>
+                <p className="text-white/80 text-sm mb-1">Total Categories</p>
+                <p className="text-4xl font-bold">{categories.length}</p>
+              </div>
+              <div className="w-12 sm:w-16 h-12 sm:h-16 bg-white/20 rounded-full flex items-center justify-center">
+                <Grid3x3 className="w-5 sm:w-7 h-5 sm-h-7" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-secondary to-secondary-dark text-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm mb-1">Total Products</p>
-                  <p className="text-4xl font-bold">{totalProducts}</p>
-                </div>
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                  <Package size={32} />
-                </div>
+            <div className="bg-gradient-to-br from-secondary to-secondary-dark text-white rounded-2xl p-3 sm:p-6 shadow-lg flex items-center justify-between">
+              <div>
+                <p className="text-white/80 text-sm mb-1">Total Products</p>
+                <p className="text-4xl font-bold">{totalProducts}</p>
+              </div>
+              <div className="w-12 sm:w-16 h-12 sm:h-16 bg-white/20 rounded-full flex items-center justify-center">
+                <Package className="w-5 sm:w-7 h-5 sm-h-7" />
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl p-6 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm mb-1">Avg per Category</p>
-                  <p className="text-4xl font-bold">
-                    {categories.length > 0 ? Math.round(totalProducts / categories.length) : 0}
-                  </p>
-                </div>
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                  <TrendingUp size={32} />
-                </div>
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-2xl p-3 sm:p-6 shadow-lg flex items-center justify-between">
+              <div>
+                <p className="text-white/80 text-sm mb-1">Avg per Category</p>
+                <p className="text-4xl font-bold">
+                  {categories.length > 0 ? Math.round(totalProducts / categories.length) : 0}
+                </p>
+              </div>
+              <div className="w-12 sm:w-16 h-12 sm:h-16 bg-white/20 rounded-full flex items-center justify-center">
+                <TrendingUp className="w-5 sm:w-7 h-5 sm-h-7" />
               </div>
             </div>
           </div>
