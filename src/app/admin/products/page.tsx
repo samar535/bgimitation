@@ -125,7 +125,7 @@ export default function ProductsPage() {
           </p>
         </div>
         <Link href="/admin/products/add">
-          <Button>
+          <Button className='cursor-pointer'>
             <Plus size={20} />
             Add Product
           </Button>
@@ -204,11 +204,11 @@ export default function ProductsPage() {
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
                     <Link href={`/admin/products/edit/${product.id}`}>
-                      <button className="p-2 hover:bg-blue-50 rounded-lg">
+                      <button className="p-2 cursor-pointer hover:bg-blue-50 rounded-lg">
                         <Edit size={18} className="text-blue-600" />
                       </button>
                     </Link>
-                    <button onClick={() => handleDelete(product.id)} className="p-2 hover:bg-red-50 rounded-lg">
+                    <button onClick={() => handleDelete(product.id)} className="p-2 cursor-pointer hover:bg-red-50 rounded-lg">
                       <Trash2 size={18} className="text-red-600" />
                     </button>
                   </div>

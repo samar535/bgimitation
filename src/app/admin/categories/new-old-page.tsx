@@ -1,9 +1,10 @@
+// perfect run without bugs and loading 
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Edit, Trash2, Save, X, Upload, Loader2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Upload } from 'lucide-react';
 import { getCategories, addCategory, updateCategory, deleteCategory } from '@/lib/firestore';
-import { uploadToCloudinary } from '@/lib/cloudinary';
+import { uploadToCloudinary } from '@/lib/cloudinary';  // सिर्फ एक इमेज अपलोड
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
@@ -17,15 +18,14 @@ export default function CategoriesPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
-  // लोकल इमेज और preview
+  // लोकल इमेज फाइल और preview
   const [localImageFile, setLocalImageFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
 
   const [formData, setFormData] = useState({
     name: '',
-    imageUrl: '', // पुरानी इमेज (edit के केस में)
+    imageUrl: '',  // पुरानी इमेज URL (edit के केस में)
     order: 0,
   });
 
@@ -61,7 +61,7 @@ export default function CategoriesPage() {
       .trim();
   };
 
-  // इमेज चुनने पर preview बनाओ
+  // लोकल इमेज चुनने पर preview बनाओ
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -79,7 +79,6 @@ export default function CategoriesPage() {
     setFormData({ name: '', imageUrl: '', order: 0 });
     setLocalImageFile(null);
     setPreviewUrl('');
-    setUploadProgress(0);
     setEditingCategory(null);
     setShowModal(false);
   };
@@ -89,32 +88,16 @@ export default function CategoriesPage() {
       toast.error('Category name is required');
       return;
     }
-
-    setUploading(true);
-    setUploadProgress(0);
-
+  
+    setUploading(true);  // ← loading शुरू
+  
     let finalImageUrl = formData.imageUrl;
-
+  
     try {
-      // नई इमेज अपलोड करो
       if (localImageFile) {
-        const interval = setInterval(() => {
-          setUploadProgress(prev => {
-            if (prev >= 90) {
-              clearInterval(interval);
-              return 90;
-            }
-            return prev + 10;
-          });
-        }, 300);
-
         finalImageUrl = await uploadToCloudinary(localImageFile);
-
-        clearInterval(interval);
-        setUploadProgress(100);
-        toast.success('Image uploaded!');
       }
-
+  
       const slug = generateSlug(formData.name);
       const categoryData = {
         name: formData.name.trim(),
@@ -122,7 +105,7 @@ export default function CategoriesPage() {
         imageUrl: finalImageUrl,
         order: Number(formData.order) || categories.length,
       };
-
+  
       if (editingCategory) {
         await updateCategory(editingCategory.id, categoryData);
         toast.success('Category updated!');
@@ -130,14 +113,13 @@ export default function CategoriesPage() {
         await addCategory({ ...categoryData, productCount: 0 });
         toast.success('Category added!');
       }
-
+  
       resetForm();
       fetchCategories();
     } catch (error) {
       toast.error('Failed to save category');
-      setUploadProgress(0);
     } finally {
-      setUploading(false);
+      setUploading(false);  // ← loading खत्म
     }
   };
 
@@ -201,7 +183,7 @@ export default function CategoriesPage() {
         </div>
       </div>
 
-      {/* Categories Grid */}
+      {/* Categories Grid - Responsive */}
       {categories.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {categories.map((cat) => (
@@ -283,70 +265,57 @@ export default function CategoriesPage() {
                 Slug: <span className="font-mono text-primary">{generateSlug(formData.name)}</span>
               </p>
 
-              {/* Category Image Upload */}
+              {/* Category Image Upload with Loading */}
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-3">
                   Category Image
                 </label>
 
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Preview */}
                   <div>
                     <p className="text-xs text-gray-500 mb-2">Preview</p>
                     <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50">
-                        {(previewUrl || formData.imageUrl) ? (
+                      {(previewUrl || formData.imageUrl) ? (
                         <>
-                            <img
+                          <img
                             src={previewUrl || formData.imageUrl}
                             alt="Category preview"
                             className="object-cover w-full h-full"
-                            />
-                            <button
+                          />
+                          <button
                             onClick={() => {
-                                setLocalImageFile(null);
-                                setPreviewUrl('');
-                                setFormData(prev => ({ ...prev, imageUrl: '' }));  // ← ये ऐड करो
+                              setLocalImageFile(null);
+                              setPreviewUrl('');
+                              if (!editingCategory) setFormData(prev => ({ ...prev, imageUrl: '' }));
                             }}
-                            className="absolute top-3 right-3 p-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition-all"
-                            >
+                            className="absolute top-3 right-3 p-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600"
+                          >
                             <X size={18} />
-                            </button>
+                          </button>
                         </>
-                        ) : (
+                      ) : (
                         <div className="flex items-center justify-center h-full text-gray-400">
-                            <p className="text-center">No image selected</p>
+                          <p className="text-center">No image selected</p>
                         </div>
-                        )}
+                      )}
                     </div>
                   </div>
 
-                  {/* Upload Area */}
+                  {/* Upload Button */}
                   <div>
                     <p className="text-xs text-gray-500 mb-2">Choose Image</p>
-                    <label className="block cursor-pointer ">
-                      <div className={`border-2 border-dashed h-[138px] rounded-xl p-2 text-center transition-all ${uploading ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary'}`}>
-                        {uploading ? (
-                          <div className="space-y-4">
-                            <Loader2 className="mx-auto animate-spin text-primary" size={40} />
-                            <p className="text-sm text-gray-600">Uploading... {uploadProgress}%</p>
-                            <div className="w-full bg-gray-200 rounded-full h-3">
-                              <div className="bg-primary h-3 rounded-full transition-all" style={{ width: `${uploadProgress}%` }} />
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            <Upload className="mx-auto mb-4 text-gray-400" size={40} />
-                            <p className="font-medium">Click to select image</p>
-                            <p className="text-xs text-gray-500 mt-1">800x800 recommended</p>
-                          </>
-                        )}
+                    <label className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-primary transition-colors bg-gray-50">
+                      <div className="flex flex-col items-center justify-center py-8">
+                        <Upload className="text-gray-400 mb-4" size={40} />
+                        <p className="text-sm font-medium text-gray-700">Click to select image</p>
+                        <p className="text-xs text-gray-500 mt-1">800x800 recommended</p>
                       </div>
                       <input
                         type="file"
                         accept="image/*"
                         onChange={handleImageSelect}
                         className="hidden"
-                        disabled={uploading}
                       />
                     </label>
                   </div>
@@ -367,14 +336,14 @@ export default function CategoriesPage() {
                 <Button
                   onClick={handleSave}
                   disabled={uploading}
-                  loading={uploading}
-                  className="flex-1 cursor-pointer px-4! sm:px-8! py-2! sm:py-3!"
+                  loading={false}
+                  className="flex-1"
                   size="lg"
                 >
                   <Save size={20} />
-                  {editingCategory ? 'Update' : 'Create'} Category
+                  {editingCategory ? 'Update' : 'Create'}
                 </Button>
-                <Button variant="outline" onClick={resetForm} className="flex-1 cursor-pointer px-4! sm:px-8! py-2! sm:py-3!" size="lg">
+                <Button variant="outline" onClick={resetForm} className="flex-1" size="lg">
                   Cancel
                 </Button>
               </div>

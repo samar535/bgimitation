@@ -8,6 +8,7 @@ import { ImageUploader } from './ImageUploader';
 import { addProduct, updateProduct, getCategories } from '@/lib/firestore';
 import { Category, Product } from '@/types/product';
 import toast from 'react-hot-toast';
+import { uploadMultipleToCloudinary } from '@/lib/cloudinary';
 
 interface ProductFormProps {
   product?: Product;
@@ -34,7 +35,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
     // rating: product?.rating || 4.5,
     // reviewCount: product?.reviewCount || 0,
   });
-  const [images, setImages] = useState<string[]>(product?.images || []);
+  const [images, setImages] = useState<string[]>(product?.images || []);  // Cloudinary URLs
+  const [localFiles, setLocalFiles] = useState<File[]>([]);  // नई फाइल्स
   const [tagInput, setTagInput] = useState('');
 
   useEffect(() => {
@@ -101,22 +103,30 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
       tags: prev.tags.filter(t => t !== tag),
     }));
   };
-
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (images.length === 0) {
+  
+    if (images.length + localFiles.length === 0) {
       toast.error('Please upload at least one image');
       return;
     }
-
+  
     setLoading(true);
     try {
+      let finalImages = [...images];
+  
+      // नई फाइल्स अपलोड करो (Save पर ही)
+      if (localFiles.length > 0) {
+        const uploadedUrls = await uploadMultipleToCloudinary(localFiles);
+        finalImages = [...finalImages, ...uploadedUrls];
+      }
+  
       const productData = {
         ...formData,
-        images,
+        images: finalImages,
       };
-
+  
       if (isEdit && product?.id) {
         await updateProduct(product.id, productData);
         toast.success('Product updated successfully!');
@@ -124,11 +134,9 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
         await addProduct(productData);
         toast.success('Product added successfully!');
       }
-      
+  
       router.push('/admin/products');
-      router.refresh();
     } catch (error) {
-      console.error('Error saving product:', error);
       toast.error('Failed to save product');
     } finally {
       setLoading(false);
@@ -136,12 +144,15 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl mx-auto">
+    <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg w-full mx-auto">
+      <div className="p-4 sm:p-8 space-y-8">
       {/* Images */}
       <div>
         <ImageUploader 
           images={images}
+          localFiles={localFiles}
           onImagesChange={setImages}
+          onLocalFilesChange={setLocalFiles}
         />
       </div>
 
@@ -297,7 +308,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
         <Button
           type="submit"
           loading={loading}
-          className="flex-1 order-1 sm:order-none px-3! sm:px-6!"
+          className="flex-1 cursor-pointer order-1 sm:order-none px-3! sm:px-6!"
         >
           {isEdit ? 'Update Product' : 'Add Product'}
         </Button>
@@ -305,10 +316,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
           type="button"
           variant="outline"
           onClick={() => router.back()}
-          className="flex-1 px-3! sm:px-6!"
+          className="flex-1 cursor-pointer px-3! sm:px-6!"
         >
           Cancel
         </Button>
+      </div>
       </div>
     </form>
   );

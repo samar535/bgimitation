@@ -9,12 +9,12 @@ import {
     query, 
     where, 
     orderBy, 
-    limit,
     Timestamp 
   } from 'firebase/firestore';
   import { db } from './firebase';
   import { Product, Category, PopularSearch } from '../types/product';
   import { increment, arrayUnion, arrayRemove, } from 'firebase/firestore';
+  import { getPublicIdFromUrl } from './cloudinary';
   
   // ==================== PRODUCTS ====================
 
@@ -100,34 +100,130 @@ import {
   };
   
   // Update product
-  export const updateProduct = async (id: string, productData: any) => {
-    try {
-      const docRef = doc(db, 'products', id);
-      await updateDoc(docRef, {
-        ...productData,
-        updatedAt: Timestamp.now(),
-      });
-      return true;
-    } catch (error) {
-      console.error('Error updating product:', error);
-      throw error;
+  // export const updateProduct = async (id: string, productData: any) => {
+  //   try {
+  //     const docRef = doc(db, 'products', id);
+  //     await updateDoc(docRef, {
+  //       ...productData,
+  //       updatedAt: Timestamp.now(),
+  //     });
+  //     return true;
+  //   } catch (error) {
+  //     console.error('Error updating product:', error);
+  //     throw error;
+  //   }
+  // };
+
+  // Update product
+export const updateProduct = async (id: string, newProductData: any) => {
+  try {
+    const productRef = doc(db, 'products', id);
+    const productSnap = await getDoc(productRef);
+
+    if (!productSnap.exists()) {
+      throw new Error('Product not found');
     }
-  };
+
+    const oldProductData = productSnap.data() as Product;
+
+    // Step 1: पुरानी इमेज URL लिस्ट
+    const oldImages = oldProductData.images || [];
+
+    // Step 2: नई इमेज URL लिस्ट (जो फॉर्म से आ रही है)
+    const newImages = newProductData.images || [];
+
+    // Step 3: जो इमेज हटाई गई हैं, उन्हें Cloudinary से डिलीट करो
+    const imagesToDelete = oldImages.filter((oldUrl: string) => !newImages.includes(oldUrl));
+
+    if (imagesToDelete.length > 0) {
+      for (const imageUrl of imagesToDelete) {
+        const publicId = getPublicIdFromUrl(imageUrl);
+        if (publicId) {
+          await fetch('/api/delete-image', {  // तुम्हारा API route
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ publicId }),
+          });
+        }
+      }
+    }
+
+    // Step 4: Firestore में प्रोडक्ट अपडेट करो
+    await updateDoc(productRef, {
+      ...newProductData,
+      updatedAt: Timestamp.now(),
+    });
+
+    // Step 5: अगर कैटेगरी चेंज हुई हो तो काउंट अपडेट करो
+    if (oldProductData.category !== newProductData.category) {
+      if (oldProductData.category) {
+        await updateCategoryProductCount(oldProductData.category.trim(), -1);
+      }
+      if (newProductData.category) {
+        await updateCategoryProductCount(newProductData.category.trim(), +1);
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error updating product:', error);
+    throw error;
+  }
+};
   
   // Delete product  
+  // export const deleteProduct = async (id: string) => {
+  //   try {
+  //     const productSnap = await getDoc(doc(db, 'products', id));
+  //     if (!productSnap.exists()) throw new Error('Product not found');
+  
+  //     const productData = productSnap.data();
+  //     await deleteDoc(doc(db, 'products', id));
+  
+  //     // सेफ्टी चेक
+  //     if (productData?.category && typeof productData.category === 'string') {
+  //       await updateCategoryProductCount(productData.category.trim(), -1);
+  //     }
+  
+  //     return true;
+  //   } catch (error) {
+  //     console.error('Error deleting product:', error);
+  //     throw error;
+  //   }
+  // };
+
+  // Delete product
   export const deleteProduct = async (id: string) => {
     try {
-      const productSnap = await getDoc(doc(db, 'products', id));
+      const productRef = doc(db, 'products', id);
+      const productSnap = await getDoc(productRef);
+
       if (!productSnap.exists()) throw new Error('Product not found');
-  
-      const productData = productSnap.data();
-      await deleteDoc(doc(db, 'products', id));
-  
-      // सेफ्टी चेक
+
+      const productData = productSnap.data() as Product;
+
+      // Cloudinary से सारी इमेज डिलीट — API कॉल से
+      if (productData.images && productData.images.length > 0) {
+        for (const imageUrl of productData.images) {
+          const publicId = getPublicIdFromUrl(imageUrl);
+          if (publicId) {
+            await fetch('/api/delete-image', {  // तुम्हारा API route
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ publicId }),
+            });
+          }
+        }
+      }
+
+      // Firestore से डिलीट
+      await deleteDoc(productRef);
+
+      // Category count अपडेट
       if (productData?.category && typeof productData.category === 'string') {
         await updateCategoryProductCount(productData.category.trim(), -1);
       }
-  
+
       return true;
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -183,30 +279,111 @@ export const addCategory = async (categoryData: {
 };
 
 // Update existing category
-export const updateCategory = async (categoryId: string, categoryData: {
-  name?: string;
-  slug?: string;
-  icon?: string;
-  imageUrl?: string;
-  order?: number;
-}) => {
+// export const updateCategory = async (categoryId: string, categoryData: {
+//   name?: string;
+//   slug?: string;
+//   icon?: string;
+//   imageUrl?: string;
+//   order?: number;
+// }) => {
+//   try {
+//     const categoryRef = doc(db, 'categories', categoryId);
+//     await updateDoc(categoryRef, {
+//       ...categoryData,
+//       updatedAt: Timestamp.now(),
+//     });
+//   } catch (error) {
+//     console.error('Error updating category:', error);
+//     throw error;
+//   }
+// };
+export const updateCategory = async (
+  categoryId: string,
+  categoryData: {
+    name?: string;
+    slug?: string;
+    icon?: string;
+    imageUrl?: string;  // नई इमेज URL (या खाली अगर हटाई गई)
+    order?: number;
+  }
+) => {
   try {
     const categoryRef = doc(db, 'categories', categoryId);
+    const categorySnap = await getDoc(categoryRef);
+
+    if (!categorySnap.exists()) {
+      throw new Error('Category not found');
+    }
+
+    const oldCategoryData = categorySnap.data();
+
+    // Step 1: अगर पुरानी इमेज थी और नई में नहीं है → डिलीट करो
+    const oldImageUrl = oldCategoryData?.imageUrl;
+    const newImageUrl = categoryData.imageUrl;
+
+    if (oldImageUrl && oldImageUrl !== newImageUrl) {
+      // पुरानी इमेज हटाई गई या चेंज की गई
+      const publicId = getPublicIdFromUrl(oldImageUrl);
+      if (publicId) {
+        await fetch('/api/delete-image', {  // तुम्हारा API route
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ publicId }),
+        });
+      }
+    }
+
+    // Step 2: Firestore में कैटेगरी अपडेट करो
     await updateDoc(categoryRef, {
       ...categoryData,
       updatedAt: Timestamp.now(),
     });
+
+    return true;
   } catch (error) {
     console.error('Error updating category:', error);
     throw error;
   }
 };
+// Delete category
+// export const deleteCategory = async (categoryId: string) => {
+//   try {
+//     const categoryRef = doc(db, 'categories', categoryId);
+//     await deleteDoc(categoryRef);
+//   } catch (error) {
+//     console.error('Error deleting category:', error);
+//     throw error;
+//   }
+// };
 
 // Delete category
 export const deleteCategory = async (categoryId: string) => {
   try {
     const categoryRef = doc(db, 'categories', categoryId);
+    const categorySnap = await getDoc(categoryRef);
+
+    if (!categorySnap.exists()) {
+      throw new Error('Category not found');
+    }
+
+    const categoryData = categorySnap.data();
+
+    // Cloudinary से कैटेगरी इमेज डिलीट — API कॉल से
+    if (categoryData?.imageUrl && typeof categoryData.imageUrl === 'string') {
+      const publicId = getPublicIdFromUrl(categoryData.imageUrl);
+      if (publicId) {
+        await fetch('/api/delete-image', {  // वही API route यूज़ करो
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ publicId }),
+        });
+      }
+    }
+
+    // Firestore से कैटेगरी डिलीट
     await deleteDoc(categoryRef);
+
+    return true;
   } catch (error) {
     console.error('Error deleting category:', error);
     throw error;
