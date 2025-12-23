@@ -193,43 +193,47 @@ export const updateProduct = async (id: string, newProductData: any) => {
   // };
 
   // Delete product
-  export const deleteProduct = async (id: string) => {
-    try {
-      const productRef = doc(db, 'products', id);
-      const productSnap = await getDoc(productRef);
+export const deleteProduct = async (id: string) => {
+  try {
+    const productRef = doc(db, 'products', id);
+    const productSnap = await getDoc(productRef);
 
-      if (!productSnap.exists()) throw new Error('Product not found');
+    if (!productSnap.exists()) throw new Error('Product not found');
 
-      const productData = productSnap.data() as Product;
+    const productData = productSnap.data() as Product;
 
-      // Cloudinary से सारी इमेज डिलीट — API कॉल से
-      if (productData.images && productData.images.length > 0) {
-        for (const imageUrl of productData.images) {
-          const publicId = getPublicIdFromUrl(imageUrl);
-          if (publicId) {
-            await fetch('/api/delete-image', {  // तुम्हारा API route
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ publicId }),
-            });
+    // Cloudinary से इमेज डिलीट — API route से
+    if (productData.images && productData.images.length > 0) {
+      for (const imageUrl of productData.images) {
+        const publicId = getPublicIdFromUrl(imageUrl);
+        if (publicId) {
+          const response = await fetch('/api/delete-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ publicId }),
+          });
+
+          if (!response.ok) {
+            console.warn('Image delete failed for:', imageUrl);
           }
         }
       }
-
-      // Firestore से डिलीट
-      await deleteDoc(productRef);
-
-      // Category count अपडेट
-      if (productData?.category && typeof productData.category === 'string') {
-        await updateCategoryProductCount(productData.category.trim(), -1);
-      }
-
-      return true;
-    } catch (error) {
-      console.error('Error deleting product:', error);
-      throw error;
     }
-  };
+
+    // Firestore से डिलीट
+    await deleteDoc(productRef);
+
+    // Category count
+    if (productData?.category) {
+      await updateCategoryProductCount(productData.category.trim(), -1);
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    throw error;
+  }
+};
 
 // ---------- CATEGORIES FUNCTIONS ----------
 
@@ -362,25 +366,27 @@ export const deleteCategory = async (categoryId: string) => {
     const categoryRef = doc(db, 'categories', categoryId);
     const categorySnap = await getDoc(categoryRef);
 
-    if (!categorySnap.exists()) {
-      throw new Error('Category not found');
-    }
+    if (!categorySnap.exists()) throw new Error('Category not found');
 
     const categoryData = categorySnap.data();
 
-    // Cloudinary से कैटेगरी इमेज डिलीट — API कॉल से
-    if (categoryData?.imageUrl && typeof categoryData.imageUrl === 'string') {
+    // Cloudinary से इमेज डिलीट — API route से
+    if (categoryData?.imageUrl) {
       const publicId = getPublicIdFromUrl(categoryData.imageUrl);
       if (publicId) {
-        await fetch('/api/delete-image', {  // वही API route यूज़ करो
+        const response = await fetch('/api/delete-image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ publicId }),
         });
+
+        if (!response.ok) {
+          console.warn('Category image delete failed for:', categoryData.imageUrl);
+        }
       }
     }
 
-    // Firestore से कैटेगरी डिलीट
+    // Firestore से डिलीट
     await deleteDoc(categoryRef);
 
     return true;
