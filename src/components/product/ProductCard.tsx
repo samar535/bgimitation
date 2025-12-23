@@ -16,11 +16,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const isSoldOut = !(product.inStock && product.stockQuantity > 0);
 
-  // const handleWhatsAppOrder = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   if (isSoldOut) return;
-  //   window.open(getWhatsAppURL(product), '_blank');
-  // };
+  const handleWhatsAppOrder = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isSoldOut) return;
+    window.open(getWhatsAppURL(product), '_blank');
+  };
 
   const discount = calculateDiscount(product.originalPrice, product.price);
 
@@ -85,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </h3>
         
         {/* Price + Discount*/}
-        <div className="flex items-center gap-2 mb-3 flex-wrap">
+        <div className="flex items-center gap-2 mb-0 sm:mb-3 flex-wrap">
           <span className="text-md md:text-2xl font-bold text-secondary">
             {formatPrice(product.price)}
           </span>
@@ -102,10 +102,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
         
         {/* WhatsApp Button */}
-        {/* <button
+        <button
           onClick={handleWhatsAppOrder}
           disabled={isSoldOut}
-          className={`w-full py-2.5 rounded-lg font-medium text-white transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
+          className={`w-full py-2.5 rounded-lg font-medium text-white transition-all hidden sm:flex items-center justify-center gap-2 text-sm sm:text-base ${
             isSoldOut
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-secondary hover:bg-secondary-dark'
@@ -118,7 +118,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="xs:hidden">
             {isSoldOut ? 'Out' : 'WhatsApp'}
           </span>
-        </button> */}
+        </button>
       </div>
     </div>
   );

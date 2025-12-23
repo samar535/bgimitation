@@ -1,6 +1,6 @@
 // Add Product Page
 
-import { ProductForm } from '@/components/admin/ProductForm';
+import { ProductForm } from '@/components/admin/new-old-ProductForm';
 
 export default function AddProductPage() {
   return (

@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getProduct } from '@/lib/firestore';
-import { ProductForm } from '@/components/admin/ProductForm';
+import { ProductForm } from '@/components/admin/new-old-ProductForm';
 import { Loader } from '@/components/ui/Loader';
 import toast from 'react-hot-toast';
 import { ArrowLeft } from 'lucide-react';
