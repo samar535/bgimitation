@@ -30,8 +30,8 @@ export const Header: React.FC = () => {
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products' },
     { href: '/category/bangles', label: 'Collections' },
-    { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
+    // { href: '/about', label: 'About' },
+    // { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="hidden flex items-center gap-2">
             <div className="text-3xl font-bold">
               <span className="text-primary">BG</span>
               <span className="text-secondary">i</span>

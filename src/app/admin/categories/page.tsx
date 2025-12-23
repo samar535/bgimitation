@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Plus, Edit, Trash2, Save, X, Upload, Loader2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, Upload, Loader2, Grid3x3 } from 'lucide-react';
 import { getCategories, addCategory, updateCategory, deleteCategory } from '@/lib/firestore';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 import { Button } from '@/components/ui/Button';
@@ -181,7 +181,7 @@ export default function CategoriesPage() {
           <h1 className="text-3xl font-bold text-dark font-serif">Categories</h1>
           <p className="text-gray-600">Manage your product categories</p>
         </div>
-        <Button onClick={() => setShowModal(true)} size="lg">
+        <Button onClick={() => setShowModal(true)} size="lg" className='cursor-pointer'>
           <Plus size={20} />
           Add Category
         </Button>
@@ -245,10 +245,10 @@ export default function CategoriesPage() {
         </div>
       ) : (
         <div className="text-center py-20 bg-white rounded-3xl shadow-lg">
-          <div className="text-9xl mb-6">📦</div>
+          <div className="text-9xl mb-6 flex justify-center"><Grid3x3 size={64} className="text-primary" /></div>
           <h2 className="text-3xl font-bold mb-4">No Categories Yet</h2>
           <p className="text-gray-600 mb-8">Create your first category to organize products</p>
-          <Button onClick={() => setShowModal(true)} size="lg">
+          <Button onClick={() => setShowModal(true)} size="lg" className='cursor-pointer'>
             <Plus size={20} />
             Add First Category
           </Button>
@@ -293,7 +293,7 @@ export default function CategoriesPage() {
                   {/* Preview */}
                   <div>
                     <p className="text-xs text-gray-500 mb-2">Preview</p>
-                    <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50">
+                    <div className="relative h-[138px] md:aspect-square rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50">
                         {(previewUrl || formData.imageUrl) ? (
                         <>
                             <img
@@ -335,8 +335,8 @@ export default function CategoriesPage() {
                           </div>
                         ) : (
                           <>
-                            <Upload className="mx-auto mb-4 text-gray-400" size={40} />
-                            <p className="font-medium">Click to select image</p>
+                            <Upload className="mx-auto mb-2 sm:mb-4 text-gray-400" size={40} />
+                            <p className="text-sm sm:text-lg font-medium">Click to select image</p>
                             <p className="text-xs text-gray-500 mt-1">800x800 recommended</p>
                           </>
                         )}

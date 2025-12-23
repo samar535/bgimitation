@@ -62,9 +62,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
     { href: '/admin/products', icon: Package, label: 'Products' },
-    { href: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
+    // { href: '/admin/orders', icon: ShoppingCart, label: 'Orders' },
     { href: '/admin/categories', icon: FolderOpen, label: 'Categories' },
-    { href: '/admin/popular-searches', icon: TrendingUp, label: 'Popular Searches' },
+    // { href: '/admin/popular-searches', icon: TrendingUp, label: 'Popular Searches' },
   ];
 
   return (
@@ -76,7 +76,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Header */}
         <div className="p-6 border-b border-gray-700 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold">
+            <h2 className="hidden text-xl font-bold">
               <span className="text-primary">BG</span>
               <span className="text-accent">i</span>
             </h2>
@@ -91,7 +91,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         {/* User Info */}
-        <div className="p-4 border-b border-gray-700">
+        <div className="hidden p-4 border-b border-gray-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
               <User size={20} />

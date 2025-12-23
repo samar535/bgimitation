@@ -79,7 +79,7 @@ export default function AdminLoginPage() {
         {/* Card */}
         <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20">
           {/* Logo & Header */}
-          <div className="text-center mb-8">
+          <div className="hidden text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary mb-4">
               <Lock size={32} className="text-white" />
             </div>
