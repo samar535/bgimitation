@@ -181,7 +181,7 @@ export default function CategoriesPage() {
           <h1 className="text-3xl font-bold text-dark font-serif">Categories</h1>
           <p className="text-gray-600">Manage your product categories</p>
         </div>
-        <Button onClick={() => setShowModal(true)} size="lg" className='cursor-pointer'>
+        <Button onClick={() => setShowModal(true)} className='cursor-pointer px-2! sm:px-8! py-2! sm:py-4 text-md sm:text-lg'>
           <Plus size={20} />
           Add Category
         </Button>

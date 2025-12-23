@@ -177,10 +177,10 @@ export const ProductForm: React.FC<ProductFormProps> = ({ product, isEdit = fals
       {/* Images */}
       <div className="bg-gray-50 rounded-2xl p-6">
         <h3 className="text-lg font-semibold text-dark mb-4">Product Images</h3>
-        <ImageUploader 
+        {/* <ImageUploader 
           images={images}
           onImagesChange={setImages}
-        />
+        /> */}
       </div>
 
       {/* Basic Info */}
