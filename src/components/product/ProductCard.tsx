@@ -86,7 +86,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         
         {/* Price + Discount*/}
         <div className="flex items-center gap-2 mb-0 sm:mb-3 flex-wrap">
-          <span className="text-md md:text-2xl font-bold text-secondary">
+          <span className="text-lg md:text-2xl font-bold text-secondary">
             {formatPrice(product.price)}
           </span>
           {product.originalPrice > product.price && (
@@ -94,7 +94,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <span className="text-sm md:text-base text-gray-500 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
-              <span className="text-xs md:text-sm font-bold text-green-600">
+              <span className="text-xs md:text-sm font-bold text-green-600 px-2 py-1 rounded-full">
                 (-{discount}%)
               </span>
             </>

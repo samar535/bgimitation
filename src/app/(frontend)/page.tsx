@@ -33,7 +33,7 @@ export default function Home() {
     <FrontendLayout>
     <div>
       {/* Hero Section */}
-      <section className="hidden relative overflow-hidden py-20 px-4 bg-gradient-to-br from-light via-pink-50 to-light">
+      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-light via-pink-50 to-light">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/20 text-secondary">
             <Sparkles size={18} />
