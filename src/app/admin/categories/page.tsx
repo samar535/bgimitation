@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Plus, Edit, Trash2, Save, X, Upload, Loader2, Grid3x3 } from 'lucide-react';
 import { getCategories, addCategory, updateCategory, deleteCategory } from '@/lib/firestore';
-import { uploadToCloudinary } from '@/lib/cloudinary';
+import { uploadToCloudinary, getPublicIdFromUrl } from '@/lib/cloudinary';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Loader } from '@/components/ui/Loader';
@@ -96,8 +96,9 @@ export default function CategoriesPage() {
     let finalImageUrl = formData.imageUrl;
 
     try {
-      // नई इमेज अपलोड करो
+      // अगर नई इमेज चुनी है तो अपलोड करो और पुरानी डिलीट करो (edit के केस में)
       if (localImageFile) {
+        // नई अपलोड
         const interval = setInterval(() => {
           setUploadProgress(prev => {
             if (prev >= 90) {
@@ -112,7 +113,20 @@ export default function CategoriesPage() {
 
         clearInterval(interval);
         setUploadProgress(100);
-        toast.success('Image uploaded!');
+
+        // पुरानी इमेज डिलीट करो (अगर थी)
+        if (editingCategory && editingCategory.imageUrl) {
+          const publicId = getPublicIdFromUrl(editingCategory.imageUrl);
+          if (publicId) {
+            await fetch('/api/delete-image', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ publicId }),
+            });
+          }
+        }
+
+        toast.success('Image updated!');
       }
 
       const slug = generateSlug(formData.name);
@@ -174,7 +188,7 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
@@ -203,7 +217,7 @@ export default function CategoriesPage() {
 
       {/* Categories Grid */}
       {categories.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {categories.map((cat) => (
             <div key={cat.id} className="bg-white rounded-2xl shadow-lg overflow-hidden">
               <div className="relative h-64">
@@ -225,17 +239,17 @@ export default function CategoriesPage() {
                   <h3 className="text-xl font-bold text-white text-center">{cat.name}</h3>
                 </div>
               </div>
-              <div className="p-4">
+              <div className="p-2 sm:p-4">
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-2xl font-bold text-secondary">{cat.productCount || 0}</span>
                   <span className="text-sm text-gray-500">Products</span>
                 </div>
                 <div className="flex gap-2">
-                  <Button onClick={() => startEdit(cat)} variant="outline" className="flex-1">
+                  <Button onClick={() => startEdit(cat)} variant="outline" className="flex-1 px-2! sm:px-6! py-1! sm:py-4">
                     <Edit size={16} />
                     Edit
                   </Button>
-                  <Button onClick={() => handleDelete(cat.id, cat.name)} variant="outline" className="text-red-600">
+                  <Button onClick={() => handleDelete(cat.id, cat.name)} variant="outline" className="text-red-600 px-2! sm:px-6! py-1! sm:py-4">
                     <Trash2 size={16} />
                   </Button>
                 </div>

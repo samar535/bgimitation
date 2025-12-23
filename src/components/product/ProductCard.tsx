@@ -16,11 +16,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   const isSoldOut = !(product.inStock && product.stockQuantity > 0);
 
-  const handleWhatsAppOrder = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (isSoldOut) return;
-    window.open(getWhatsAppURL(product), '_blank');
-  };
+  // const handleWhatsAppOrder = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   if (isSoldOut) return;
+  //   window.open(getWhatsAppURL(product), '_blank');
+  // };
 
   const discount = calculateDiscount(product.originalPrice, product.price);
 
@@ -102,7 +102,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
         
         {/* WhatsApp Button */}
-        <button
+        {/* <button
           onClick={handleWhatsAppOrder}
           disabled={isSoldOut}
           className={`w-full py-2.5 rounded-lg font-medium text-white transition-all flex items-center justify-center gap-2 text-sm sm:text-base ${
@@ -118,7 +118,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span className="xs:hidden">
             {isSoldOut ? 'Out' : 'WhatsApp'}
           </span>
-        </button>
+        </button> */}
       </div>
     </div>
   );
