@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Heart, Award, Sparkles, Users, ShieldCheck, Truck } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -10,72 +11,65 @@ export default function AboutPage() {
   const features = [
     {
       icon: Award,
-      title: 'Premium Quality',
-      description: 'Handcrafted with precision and attention to detail. Every piece is quality checked.'
+      title: 'Attractive Designs',
+      description: 'Stylish imitation jewelry with neat finishing for daily wear and special occasions.'
     },
     {
       icon: ShieldCheck,
-      title: '100% Authentic',
-      description: 'Genuine imitation jewelry with authentic designs inspired by traditional craftsmanship.'
+      title: 'Genuine Imitation',
+      description: 'Imitation jewelry inspired by traditional and modern styles at affordable prices.'
     },
     {
       icon: Truck,
-      title: 'Fast Delivery',
-      description: 'Quick and secure delivery across India. Track your order every step of the way.'
+      title: 'Safe Delivery',
+      description: 'Carefully packed and delivered across India with order tracking.'
     },
     {
       icon: Heart,
-      title: 'Customer Love',
-      description: 'Thousands of happy customers trust us for their jewelry needs. Join our family!'
+      title: 'Trusted by Customers',
+      description: 'Loved for our designs, pricing, and smooth shopping experience.'
     },
   ];
 
   const values = [
     {
-      title: 'Craftsmanship',
-      description: 'Each piece is meticulously crafted by skilled artisans who pour their heart into every design.',
+      title: 'Design & Detailing',
+      description: 'We focus on attractive designs and neat finishing so you get jewelry that looks beautiful and feels good to wear.',
     },
     {
       title: 'Affordability',
-      description: 'Luxury shouldn\'t break the bank. We offer premium quality at prices that make sense.',
+      description: 'We believe stylish jewelry should be affordable. Our imitation pieces are reasonably priced so you can enjoy fashion easily.',
     },
     {
-      title: 'Tradition',
-      description: 'We celebrate Indian heritage by creating designs that blend traditional aesthetics with modern style.',
+      title: 'Inspired by Tradition',
+      description: 'We take inspiration from Indian traditions and blend them with modern designs suitable for daily wear and special occasions.',
     },
     {
-      title: 'Trust',
-      description: 'Your satisfaction is our priority. We build lasting relationships based on trust and quality.',
+      title: 'Customer Satisfaction',
+      description: 'Your happiness matters to us. We aim to provide good products, clear communication, and a smooth shopping experience.',
     },
-  ];
-
-  const stats = [
-    { number: '10,000+', label: 'Happy Customers' },
-    { number: '500+', label: 'Unique Designs' },
-    { number: '5 Star', label: 'Average Rating' },
-    { number: '100%', label: 'Satisfaction' },
   ];
 
   return (
     <FrontendLayout>
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 bg-gradient-to-br from-light via-pink-50 to-purple-50 overflow-hidden">
+      <section className="relative py-8 sm:py-16 px-4 bg-gradient-to-br from-light via-pink-50 to-purple-50 overflow-hidden">
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/20 text-secondary">
             <Sparkles size={18} />
-            <span className="text-sm font-semibold">Since 2024</span>
+            <span className="text-sm font-semibold">Since 2025</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-dark font-serif">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-dark font-serif">
             Our Story of
             <br />
-            <span className="gradient-text">Elegance & Passion</span>
+            <span className="gradient-text">Style & Simplicity</span>
           </h1>
           
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            BG Imitation Jewelry was born from a simple belief: everyone deserves to wear beautiful jewelry. 
-            We bring you exquisite designs that capture the essence of tradition while embracing modern elegance.
+          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            BG Imitation Jewelry started with a simple idea: everyone should be able to enjoy stylish jewelry without spending too much. 
+            We offer imitation jewelry inspired by traditional and modern styles, suitable for everyday wear and special occasions.
           </p>
         </div>
 
@@ -85,24 +79,22 @@ export default function AboutPage() {
       </section>
 
       {/* Our Mission Section */}
-      <section className="py-20 px-4">
+      <section className="py-8 sm:py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6 text-dark font-serif">
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-dark font-serif">
                 Our Mission
               </h2>
               <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                At BG Imitation, we're on a mission to make premium quality jewelry accessible to everyone. 
-                We believe that beauty and elegance shouldn't be limited by budget.
+                At BG Imitation, our mission is to make stylish imitation jewelry affordable and easy to wear for everyone. We believe that looking good shouldn’t be expensive.
               </p>
               <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Every piece in our collection is carefully curated and crafted to bring joy to your special moments. 
-                From weddings to festivals, from daily wear to special occasions – we have something for every celebration.
+                Our collection is thoughtfully selected to suit weddings, festivals, daily wear, and special occasions, so you can find the right piece for every celebration.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button>Shop Now</Button>
-                <Button variant="outline">View Collections</Button>
+                <Link href="/products"> <Button>Shop Now</Button> </Link>
+                <Link href="/"><Button variant="outline">View Collections</Button></Link>
               </div>
             </div>
             
@@ -117,21 +109,21 @@ export default function AboutPage() {
                   unoptimized
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-40 h-40 bg-primary rounded-2xl -z-10"></div>
+              <div className="hidden md:block absolute -bottom-6 -right-6 w-40 h-40 bg-primary rounded-2xl -z-10"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-8 sm:py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-dark font-serif">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-dark font-serif">
               Why Choose Us?
             </h2>
             <p className="text-gray-600 text-lg">
-              We're committed to delivering excellence in every aspect
+              We focus on good designs, fair pricing, and a smooth shopping experience
             </p>
           </div>
 
@@ -152,27 +144,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-secondary to-secondary-dark text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, idx) => (
-              <div key={idx} className="text-center">
-                <div className="text-5xl md:text-6xl font-bold mb-2 text-accent">
-                  {stat.number}
-                </div>
-                <div className="text-lg text-white/90">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Our Values */}
-      <section className="py-20 px-4">
+      <section className="py-8 sm:py-16 px-4 bg-gradient-to-br from-light to-pink-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-dark font-serif">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-dark font-serif">
               Our Core Values
             </h2>
             <p className="text-gray-600 text-lg">
@@ -184,12 +160,12 @@ export default function AboutPage() {
             {values.map((value, idx) => (
               <div
                 key={idx}
-                className="p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all border-l-4 border-primary"
+                className="p-4 sm:p-8 rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all border-l-4 border-primary"
               >
-                <h3 className="text-2xl font-bold mb-3 text-dark font-serif">
+                <h3 className="text-xl font-bold mb-3 text-dark font-serif">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed text-lg">
+                <p className="text-gray-600 leading-relaxed text-md sm:text-lg">
                   {value.description}
                 </p>
               </div>
@@ -198,30 +174,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-light to-pink-50">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6 text-dark font-serif">
-            Meet Our Team
-          </h2>
-          <p className="text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
-            A passionate team dedicated to bringing you the finest jewelry designs and exceptional customer service.
-          </p>
-
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white shadow-lg">
-            <Users size={24} className="text-secondary" />
-            <span className="text-lg font-semibold text-gray-800">
-              50+ Dedicated Team Members
-            </span>
-          </div>
-        </div>
-      </section>
-
       {/* Customer Testimonials */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-8 sm:py-16 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-dark font-serif">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-dark font-serif">
               What Our Customers Say
             </h2>
             <p className="text-gray-600 text-lg">
@@ -233,26 +190,26 @@ export default function AboutPage() {
             {[
               {
                 name: 'Priya Sharma',
-                location: 'Mumbai',
+                location: 'Bundi',
                 text: 'Absolutely stunning jewelry! The quality exceeded my expectations. I wore the necklace set to a wedding and received countless compliments.',
                 rating: 5,
               },
               {
                 name: 'Anjali Patel',
-                location: 'Ahmedabad',
+                location: 'Baran',
                 text: 'Love the designs! They have such a beautiful collection. The WhatsApp ordering is so convenient. Will definitely buy again!',
                 rating: 5,
               },
               {
                 name: 'Sneha Reddy',
-                location: 'Hyderabad',
+                location: 'Kota',
                 text: 'The best imitation jewelry I\'ve ever purchased. Looks exactly like the real thing! Great prices and fast delivery too.',
                 rating: 5,
               },
             ].map((testimonial, idx) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl bg-gradient-to-br from-white to-purple-50 shadow-lg border border-gray-100"
+                className="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-white to-purple-50 shadow-lg border border-gray-100"
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -273,21 +230,25 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-secondary to-secondary-dark text-white">
+      <section className="py-8 sm:py-16 px-4 bg-gradient-to-br from-secondary to-secondary-dark text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 font-serif">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 font-serif">
             Ready to Shine?
           </h2>
-          <p className="text-xl mb-8 text-white/90">
+          <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-white/90">
             Explore our collection and find the perfect piece for your special moment
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" className="bg-accent hover:bg-accent/90 text-dark">
+            <Link href="/products">
+            <Button size="lg" className="cursor-pointer bg-accent hover:bg-accent/90 text-dark px-4! sm:px-8! py-2! sm:py-4!">
               Shop Now
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-secondary">
+            </Link>
+            <Link href="/contact">
+            <Button size="lg" variant="outline" className="cursor-pointer border-white text-white hover:bg-white hover:text-secondary! px-4! sm:px-8! py-2! sm:py-4!">
               Contact Us
             </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -299,15 +260,15 @@ export default function AboutPage() {
             <div>
               <h3 className="text-xl font-bold mb-3 text-dark">Visit Us</h3>
               <p className="text-gray-600">
-                Kota, Rajasthan<br />
+                Bundi, Rajasthan<br />
                 India
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-3 text-dark">Contact</h3>
               <p className="text-gray-600">
-                +91 98765 43210<br />
-                info@bgjewelry.com
+                +91 9024684467<br />
+                bhagawatigoriimitation@gmail.com
               </p>
             </div>
             <div>

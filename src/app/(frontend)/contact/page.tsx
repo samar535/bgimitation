@@ -50,14 +50,14 @@ export default function ContactPage() {
 
   return (
     <FrontendLayout>
-    <div className="min-h-screen py-20 px-4">
+    <div className="min-h-screen py-8 sm:py-16 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4 text-dark font-serif">
+        <div className="text-center mb-8 sm:mb-16">
+          <h1 className="text-3xl sm:text-5xl font-bold mb-4 text-dark font-serif">
             Get in Touch
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-lg sm:text-xl text-gray-600">
             Have questions? We'd love to hear from you!
           </p>
         </div>

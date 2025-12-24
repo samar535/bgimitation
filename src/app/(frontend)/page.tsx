@@ -33,32 +33,32 @@ export default function Home() {
     <FrontendLayout>
     <div>
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-4 bg-gradient-to-br from-light via-pink-50 to-light">
+      <section className="relative overflow-hidden py-8 sm:py-16 px-4 bg-gradient-to-br from-light via-pink-50 to-light">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 bg-primary/20 text-secondary">
             <Sparkles size={18} />
-            <span className="text-sm font-semibold">Premium Quality Guaranteed</span>
+            <span className="text-sm font-semibold">Stylish Imitation Jewelry</span>
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-dark font-serif">
-            Elegance Meets
+            Style Meets
             <br />
             <span className="text-secondary">Tradition</span>
           </h1>
 
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Discover our exquisite collection of handcrafted imitation jewelry.
-            Perfect for every occasion, designed with love.
+            Discover beautiful imitation jewelry inspired by traditional and modern designs.
+            Perfect for daily wear, festivals, and special occasions.
           </p>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
             <Link href="/products">
-              <Button size="lg">
+              <Button size="lg" className='px-4! sm:px-8! py-2! sm:py-4!'>
                 Shop Now
               </Button>
             </Link>
             <Link href="/products">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" className='px-4! sm:px-8! py-2! sm:py-4!'>
                 View Collections
               </Button>
             </Link>
@@ -67,7 +67,7 @@ export default function Home() {
       </section>
 
       {/* Categories */}
-      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-white to-purple-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-dark font-serif">
             Shop by Category
@@ -126,7 +126,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <Link href="/products">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" className='px-4! sm:px-8! py-2! sm:py-4!'>
                 View All Products
               </Button>
             </Link>

@@ -78,7 +78,7 @@ export default function WishlistPage() {
             <Button
               variant="outline"
               onClick={handleClearWishlist}
-              className="hidden md:flex"
+              className="hidden md:flex px-3! sm:px-6! py-2! sm:py-3"
             >
               <Trash2 size={18} />
               Clear All
@@ -108,7 +108,7 @@ export default function WishlistPage() {
         ) : (
           <>
             {/* Mobile Clear Button */}
-            <div className="md:hidden mb-6">
+            {/* <div className="md:hidden mb-6">
               <Button
                 variant="outline"
                 onClick={handleClearWishlist}
@@ -117,7 +117,7 @@ export default function WishlistPage() {
                 <Trash2 size={18} />
                 Clear All
               </Button>
-            </div>
+            </div> */}
 
             {/* Products Grid */}
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -136,13 +136,13 @@ export default function WishlistPage() {
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
                 <Button 
-                  size="lg"
+                  size="lg" className='px-4! sm:px-8! py-2! sm:py-3!'
                   onClick={() => window.open(`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`, '_blank')}
                 >
                   Order via WhatsApp
                 </Button>
                 <Link href="/products">
-                  <Button variant="outline" size="lg">
+                  <Button variant="outline" size="lg" className='px-4! sm:px-8! py-2! sm:py-3!'>
                     Continue Shopping
                   </Button>
                 </Link>
@@ -157,9 +157,9 @@ export default function WishlistPage() {
             <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
               <span className="text-2xl">💚</span>
             </div>
-            <h4 className="font-bold text-lg mb-2">Save Favorites</h4>
+            <h4 className="font-bold text-lg mb-2">Save Your Picks</h4>
             <p className="text-sm text-gray-600">
-              Keep track of products you love
+              Keep your favorite jewelry in one place
             </p>
           </div>
 
@@ -167,9 +167,9 @@ export default function WishlistPage() {
             <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-100 flex items-center justify-center">
               <span className="text-2xl">🔔</span>
             </div>
-            <h4 className="font-bold text-lg mb-2">Get Notified</h4>
+            <h4 className="font-bold text-lg mb-2">Stay Updated</h4>
             <p className="text-sm text-gray-600">
-              We'll alert you about price drops
+              Get updates on offers and availability
             </p>
           </div>
 
@@ -177,12 +177,13 @@ export default function WishlistPage() {
             <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-purple-100 flex items-center justify-center">
               <span className="text-2xl">✨</span>
             </div>
-            <h4 className="font-bold text-lg mb-2">Easy Access</h4>
+            <h4 className="font-bold text-lg mb-2">Shop Anytime</h4>
             <p className="text-sm text-gray-600">
-              Access your wishlist anytime
+              Easily access your wishlist anytime
             </p>
           </div>
         </div>
+
       </div>
     </div>
     </FrontendLayout>

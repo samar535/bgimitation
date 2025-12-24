@@ -55,7 +55,7 @@ export default function CartPage() {
     <FrontendLayout>
     <div className="min-h-screen py-8 sm:py-12 md:py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 text-dark font-serif">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-dark font-serif">
           Your Shopping Cart
         </h1>
 
@@ -83,8 +83,14 @@ export default function CartPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
-                    <p className="text-gray-600 mb-4">₹{item.price} each</p>
+                    <div className="grid gap-2">
+                      <h3 className="text-xl font-semibold mb-2">{item.name}</h3>        
+                      <div className="flex justify-between gap-3">
+                        <p className="text-gray-600 mb-4">₹{item.price} each</p>
+                        <p className="text-xl sm:text-2xl font-bold text-secondary">₹{item.price * item.quantity}</p>
+                      </div>
+                    </div>
+
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-3 bg-gray-100 rounded-full px-4 py-2">
                         <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="text-gray-600 hover:text-dark">
@@ -100,16 +106,13 @@ export default function CartPage() {
                       </button>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-secondary">₹{item.price * item.quantity}</p>
-                  </div>
                 </div>
               ))}
 
               <div className="mt-12 pt-8 border-t-4 border-dashed border-gray-200">
                 <div className="flex justify-between items-center mb-8">
                   <p className="text-2xl font-semibold">Total</p>
-                  <p className="text-4xl font-bold text-secondary">₹{getTotalPrice()}</p>
+                  <p className="text-2xl sm:text-4xl font-bold text-secondary">₹{getTotalPrice()}</p>
                 </div>
 
                 <Button 

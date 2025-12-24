@@ -23,7 +23,7 @@ export const FrontendLayout = ({ children }: { children: React.ReactNode }) => {
         <Phone size={28} color="white" />
       </a>
 
-      <MobileNav />
+      {/* <MobileNav /> */}
     </>
   );
 };
