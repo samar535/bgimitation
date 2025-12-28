@@ -180,177 +180,177 @@ const onTouchEnd = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12 mb-20">
-{/* Images - Only Main Slider on Main Page */}
-<div>
-  <button
-    type="button"
-    onClick={() => openGallery(selectedImage)}
-    className="block w-full focus:outline-none"
-  >
-    <div 
-      className="relative aspect-square rounded-2xl overflow-hidden mb-6 bg-gray-100 group cursor-zoom-in"
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-    >
-      <div 
-        className="flex transition-transform duration-700 ease-out h-full"
-        style={{ transform: `translateX(-${selectedImage * 100}%)` }}
-      >
-        {product.images.map((img: string, idx: number) => (
-          <div key={idx} className="w-full h-full flex-shrink-0">
-            <CldImage
-              width={800}
-              height={800}
-              src={img}
-              alt={`${product.name} - image ${idx + 1}`}
-              className="object-cover w-full h-full"
-              crop="fill"
-              gravity="auto"
-              priority={idx === 0}
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Click Hint */}
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center pointer-events-none">
-        <span className="bg-white/90 px-6 py-3 rounded-full text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-          Tap to view full gallery ({product.images.length} images)
-        </span>
-      </div>
-
-      {/* Discount Badge */}
-      {discount > 0 && (
-        <div className="absolute top-4 left-4 px-4 py-2 bg-red-500 text-white font-bold rounded-full z-10 shadow-lg">
-          {discount}% OFF
-        </div>
-      )}
-
-      {/* Navigation Buttons */}
-      {product.images.length > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevImage();
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-1 md:p-3 bg-white/90 rounded-full shadow-lg hover:bg-white z-10 md:opacity-0 md:group-hover:opacity-100 transition-all"
-          >
-            <ChevronLeft size={28} />
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextImage();
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-1 md:p-3 bg-white/90 rounded-full shadow-lg hover:bg-white z-10 md:opacity-0 md:group-hover:opacity-100 transition-all"
-          >
-            <ChevronRight size={28} />
-          </button>
-        </>
-      )}
-
-      {/* Dots Indicator */}
-      {product.images.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {product.images.map((_: string, idx: number) => (
+          {/* Images - Only Main Slider on Main Page */}
+          <div>
             <button
-              key={idx}
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedImage(idx);
-              }}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                idx === selectedImage ? 'bg-white w-10' : 'bg-white/60 hover:bg-white/80'
-              }`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  </button>
-</div>
-
-{/* Full Screen Gallery Modal - With Thumbnails at Bottom */}
-{galleryOpen && (
-  <div 
-    className="fixed inset-0 bg-black z-50 flex flex-col"
-    onClick={closeGallery}
-  >
-    {/* Close Button */}
-    <button 
-      onClick={closeGallery}
-      className="absolute top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full transition-all z-20"
-    >
-      <X size={28} />
-    </button>
-
-    {/* Main Gallery Image */}
-    <div className="flex-1 flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>
-      <div className="relative max-w-5xl w-full">
-        <CldImage
-          width={1200}
-          height={1200}
-          src={product.images[galleryIndex]}
-          alt={`${product.name} - full view`}
-          className="object-contain w-full h-full max-h-[80vh] rounded-2xl"
-          crop="fit"
-        />
-
-        {/* Gallery Navigation */}
-        {product.images.length > 1 && (
-          <>
-            <button
-              onClick={prevGalleryImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-1 md:p-4 bg-white/80 hover:bg-white rounded-full transition-all"
+              onClick={() => openGallery(selectedImage)}
+              className="block w-full focus:outline-none"
             >
-              <ChevronLeft size={36} />
-            </button>
-            <button
-              onClick={nextGalleryImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 md:p-4 bg-white/80 hover:bg-white rounded-full transition-all"
-            >
-              <ChevronRight size={36} />
-            </button>
-          </>
-        )}
-      </div>
-    </div>
+              <div 
+                className="relative aspect-square rounded-2xl overflow-hidden mb-6 bg-gray-100 group cursor-zoom-in"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
+                <div 
+                  className="flex transition-transform duration-700 ease-out h-full"
+                  style={{ transform: `translateX(-${selectedImage * 100}%)` }}
+                >
+                  {product.images.map((img: string, idx: number) => (
+                    <div key={idx} className="w-full h-full flex-shrink-0">
+                      <CldImage
+                        width={800}
+                        height={800}
+                        src={img}
+                        alt={`${product.name} - image ${idx + 1}`}
+                        className="object-cover w-full h-full"
+                        crop="fill"
+                        gravity="auto"
+                        priority={idx === 0}
+                      />
+                    </div>
+                  ))}
+                </div>
 
-    {/* Thumbnails in Gallery - Bottom Strip */}
-    {product.images.length > 1 && (
-      <div className="px-4 md:px-8 pb-8 max-w-5xl mx-auto w-full">
-        <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-          {product.images.map((img: string, idx: number) => (
-            <button
-              key={idx}
-              onClick={(e) => {
-                e.stopPropagation();
-                setGalleryIndex(idx);
-              }}
-              className={`flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border-3 transition-all ${
-                idx === galleryIndex ? 'border-white ring-4 ring-white/50 shadow-xl' : 'border-white/30 hover:border-white/70'
-              }`}
-            >
-              <CldImage
-                width={150}
-                height={150}
-                src={img}
-                alt=""
-                className="object-cover w-full h-full"
-                crop="fill"
-              />
+                {/* Click Hint */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center pointer-events-none">
+                  <span className="bg-white/90 px-6 py-3 rounded-full text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    Tap to view full gallery ({product.images.length} images)
+                  </span>
+                </div>
+
+                {/* Discount Badge */}
+                {discount > 0 && (
+                  <div className="absolute top-4 left-4 px-4 py-2 bg-red-500 text-white font-bold rounded-full z-10 shadow-lg">
+                    {discount}% OFF
+                  </div>
+                )}
+
+                {/* Navigation Buttons */}
+                {product.images.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevImage();
+                      }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-1 md:p-3 bg-white/90 rounded-full shadow-lg hover:bg-white z-10 md:opacity-0 md:group-hover:opacity-100 transition-all"
+                    >
+                      <ChevronLeft size={28} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextImage();
+                      }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-1 md:p-3 bg-white/90 rounded-full shadow-lg hover:bg-white z-10 md:opacity-0 md:group-hover:opacity-100 transition-all"
+                    >
+                      <ChevronRight size={28} />
+                    </button>
+                  </>
+                )}
+
+                {/* Dots Indicator */}
+                {product.images.length > 1 && (
+                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                    {product.images.map((_: string, idx: number) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedImage(idx);
+                        }}
+                        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                          idx === selectedImage ? 'bg-white w-10' : 'bg-white/60 hover:bg-white/80'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </button>
-          ))}
-        </div>
-      </div>
-    )}
-  </div>
-)}
+          </div>
+
+          {/* Full Screen Gallery Modal - With Thumbnails at Bottom */}
+          {galleryOpen && (
+            <div 
+              className="fixed inset-0 bg-black z-50 flex flex-col"
+              onClick={closeGallery}
+            >
+              {/* Close Button */}
+              <button 
+                onClick={closeGallery}
+                className="absolute top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full transition-all z-20"
+              >
+                <X size={28} />
+              </button>
+
+              {/* Main Gallery Image */}
+              <div className="flex-1 flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>
+                <div className="relative max-w-5xl w-full">
+                  <CldImage
+                    width={1200}
+                    height={1200}
+                    src={product.images[galleryIndex]}
+                    alt={`${product.name} - full view`}
+                    className="object-contain w-full h-full max-h-[80vh] rounded-2xl"
+                    crop="fit"
+                  />
+
+                  {/* Gallery Navigation */}
+                  {product.images.length > 1 && (
+                    <>
+                      <button
+                        onClick={prevGalleryImage}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-1 md:p-4 bg-white/80 hover:bg-white rounded-full transition-all"
+                      >
+                        <ChevronLeft size={36} />
+                      </button>
+                      <button
+                        onClick={nextGalleryImage}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 md:p-4 bg-white/80 hover:bg-white rounded-full transition-all"
+                      >
+                        <ChevronRight size={36} />
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Thumbnails in Gallery - Bottom Strip */}
+              {product.images.length > 1 && (
+                <div className="px-4 md:px-8 pb-8 max-w-5xl mx-auto w-full">
+                  <div className="flex gap-3 overflow-x-auto scrollbar-hide">
+                    {product.images.map((img: string, idx: number) => (
+                      <button
+                        key={idx}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setGalleryIndex(idx);
+                        }}
+                        className={`flex-shrink-0 w-16 md:w-24 h-16 md:h-24 rounded-lg overflow-hidden border-3 transition-all ${
+                          idx === galleryIndex ? 'border-white' : 'border-white/30 hover:border-white/70'
+                        }`}
+                      >
+                        <CldImage
+                          width={60}
+                          height={60}
+                          src={img}
+                          alt=""
+                          className="object-cover w-full h-full"
+                          crop="fill"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Details */}
           <div>
