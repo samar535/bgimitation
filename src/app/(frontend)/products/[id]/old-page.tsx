@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { Phone, Heart, ChevronDown, ChevronUp, Share2, ChevronLeft, ChevronRight, ShoppingCart, X } from 'lucide-react';
+import { Phone, Heart, ChevronDown, ChevronUp, Share2, ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
 import { getProduct, getProductsByCategory } from '@/lib/firestore';
 import { Button } from '@/components/ui/Button';
 import { Loader } from '@/components/ui/Loader';
@@ -24,50 +24,6 @@ export default function ProductDetailPage() {
   
   const { addItem, removeItem, isInWishlist } = useWishlistStore();
   const inWishlist = product ? isInWishlist(product.id) : false;
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-const [touchEnd, setTouchEnd] = useState<number | null>(null);
-
-const minSwipeDistance = 50;
-const [galleryOpen, setGalleryOpen] = useState(false);
-const [galleryIndex, setGalleryIndex] = useState(0);
-
-const openGallery = (index: number) => {
-  setGalleryIndex(index);
-  setGalleryOpen(true);
-};
-
-const closeGallery = () => {
-  setGalleryOpen(false);
-};
-
-const prevGalleryImage = (e: React.MouseEvent) => {
-  e.stopPropagation();
-  setGalleryIndex((prev) => (prev - 1 + product.images.length) % product.images.length);
-};
-
-const nextGalleryImage = (e: React.MouseEvent) => {
-  e.stopPropagation();
-  setGalleryIndex((prev) => (prev + 1) % product.images.length);
-};
-
-const onTouchStart = (e: React.TouchEvent) => {
-  setTouchEnd(null);
-  setTouchStart(e.targetTouches[0].clientX);
-};
-
-const onTouchMove = (e: React.TouchEvent) => {
-  setTouchEnd(e.targetTouches[0].clientX);
-};
-
-const onTouchEnd = () => {
-  if (!touchStart || !touchEnd) return;
-  const distance = touchStart - touchEnd;
-  const isLeftSwipe = distance > minSwipeDistance;
-  const isRightSwipe = distance < -minSwipeDistance;
-
-  if (isLeftSwipe) nextImage();
-  if (isRightSwipe) prevImage();
-};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,26 +68,16 @@ const onTouchEnd = () => {
     toast.success('Added to cart!');
   };
 
-  const handleShare = async () => {
-    const url = window.location.href;
+  const handleShare = () => {
     if (navigator.share) {
-      try {
-        await navigator.share({ title: product.name, url });
-        return;
-      } catch {}
-    }
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success('Link copied!');
-    } catch {
-      // fallback execCommand
-      const ta = document.createElement('textarea');
-      ta.value = url;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      toast.success('Link copied!');
+      navigator.share({
+        title: product.name,
+        text: `Check out ${product.name}`,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast.success('Link copied to clipboard!');
     }
   };
 
@@ -144,6 +90,16 @@ const onTouchEnd = () => {
     if (!product) return;
     setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length);
   };
+
+  useEffect(() => {
+    if (!product || product.images.length <= 1) return;
+  
+    const interval = setInterval(() => {
+      setSelectedImage((prev) => (prev + 1) % product.images.length);
+    }, 4000);
+  
+    return () => clearInterval(interval);
+  }, [product]);  // ← यहीं चेंज
 
   if (loading) {
     return (
@@ -180,177 +136,95 @@ const onTouchEnd = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12 mb-20">
-{/* Images - Only Main Slider on Main Page */}
-<div>
-  <button
-    type="button"
-    onClick={() => openGallery(selectedImage)}
-    className="block w-full focus:outline-none"
-  >
-    <div 
-      className="relative aspect-square rounded-2xl overflow-hidden mb-6 bg-gray-100 group cursor-zoom-in"
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-    >
-      <div 
-        className="flex transition-transform duration-700 ease-out h-full"
-        style={{ transform: `translateX(-${selectedImage * 100}%)` }}
-      >
-        {product.images.map((img: string, idx: number) => (
-          <div key={idx} className="w-full h-full flex-shrink-0">
-            <CldImage
-              width={800}
-              height={800}
-              src={img}
-              alt={`${product.name} - image ${idx + 1}`}
-              className="object-cover w-full h-full"
-              crop="fill"
-              gravity="auto"
-              priority={idx === 0}
-            />
+          {/* Images */}
+          <div>
+          <div className="relative aspect-square rounded-2xl overflow-hidden mb-4 bg-gray-100 group">
+            {/* smooth slide container */}
+            <div 
+              className="flex transition-transform duration-1000 ease-in-out h-full"
+              style={{ transform: `translateX(-${selectedImage * 100}%)` }}
+            >
+              {product.images.map((img: string, idx: number) => (
+                <div key={idx} className="w-full h-full flex-shrink-0">
+                  <CldImage
+                    width={800}
+                    height={800}
+                    src={img}
+                    alt={`${product.name} - image ${idx + 1}`}
+                    className="object-cover w-full h-full"
+                    crop="fill"
+                    gravity="auto"
+                    priority={idx === 0}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Discount Badge */}
+            {discount > 0 && (
+              <div className="absolute top-4 left-4 px-4 py-1 sm:py-2 bg-red-500 text-sm md:text-md text-white font-bold rounded-full z-10">
+                {discount}% OFF
+              </div>
+            )}
+
+            {/* Navigation Buttons - होवर पर दिखें */}
+            {product.images.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all z-10 opacity-0 group-hover:opacity-100"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all z-10 opacity-0 group-hover:opacity-100"
+                >
+                  <ChevronRight size={28} />
+                </button>
+              </>
+            )}
+
+            {/* Dots Indicator */}
+            {product.images.length > 1 && (
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                {product.images.map((img: string, idx: number) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      idx === selectedImage 
+                        ? 'bg-white w-10' 
+                        : 'bg-white/60 hover:bg-white/80'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
 
-      {/* Click Hint */}
-      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center pointer-events-none">
-        <span className="bg-white/90 px-6 py-3 rounded-full text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-          Tap to view full gallery ({product.images.length} images)
-        </span>
-      </div>
-
-      {/* Discount Badge */}
-      {discount > 0 && (
-        <div className="absolute top-4 left-4 px-4 py-2 bg-red-500 text-white font-bold rounded-full z-10 shadow-lg">
-          {discount}% OFF
-        </div>
-      )}
-
-      {/* Navigation Buttons */}
-      {product.images.length > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevImage();
-            }}
-            className="absolute left-4 top-1/2 -translate-y-1/2 p-1 md:p-3 bg-white/90 rounded-full shadow-lg hover:bg-white z-10 md:opacity-0 md:group-hover:opacity-100 transition-all"
-          >
-            <ChevronLeft size={28} />
-          </button>
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextImage();
-            }}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-1 md:p-3 bg-white/90 rounded-full shadow-lg hover:bg-white z-10 md:opacity-0 md:group-hover:opacity-100 transition-all"
-          >
-            <ChevronRight size={28} />
-          </button>
-        </>
-      )}
-
-      {/* Dots Indicator */}
-      {product.images.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-          {product.images.map((_: string, idx: number) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedImage(idx);
-              }}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                idx === selectedImage ? 'bg-white w-10' : 'bg-white/60 hover:bg-white/80'
-              }`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  </button>
-</div>
-
-{/* Full Screen Gallery Modal - With Thumbnails at Bottom */}
-{galleryOpen && (
-  <div 
-    className="fixed inset-0 bg-black z-50 flex flex-col"
-    onClick={closeGallery}
-  >
-    {/* Close Button */}
-    <button 
-      onClick={closeGallery}
-      className="absolute top-4 right-4 p-3 bg-white/90 hover:bg-white rounded-full transition-all z-20"
-    >
-      <X size={28} />
-    </button>
-
-    {/* Main Gallery Image */}
-    <div className="flex-1 flex items-center justify-center p-4" onClick={(e) => e.stopPropagation()}>
-      <div className="relative max-w-5xl w-full">
-        <CldImage
-          width={1200}
-          height={1200}
-          src={product.images[galleryIndex]}
-          alt={`${product.name} - full view`}
-          className="object-contain w-full h-full max-h-[80vh] rounded-2xl"
-          crop="fit"
-        />
-
-        {/* Gallery Navigation */}
-        {product.images.length > 1 && (
-          <>
-            <button
-              onClick={prevGalleryImage}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-1 md:p-4 bg-white/80 hover:bg-white rounded-full transition-all"
-            >
-              <ChevronLeft size={36} />
-            </button>
-            <button
-              onClick={nextGalleryImage}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-1 md:p-4 bg-white/80 hover:bg-white rounded-full transition-all"
-            >
-              <ChevronRight size={36} />
-            </button>
-          </>
-        )}
-      </div>
-    </div>
-
-    {/* Thumbnails in Gallery - Bottom Strip */}
-    {product.images.length > 1 && (
-      <div className="px-4 md:px-8 pb-8 max-w-5xl mx-auto w-full">
-        <div className="flex gap-3 overflow-x-auto scrollbar-hide">
-          {product.images.map((img: string, idx: number) => (
-            <button
-              key={idx}
-              onClick={(e) => {
-                e.stopPropagation();
-                setGalleryIndex(idx);
-              }}
-              className={`flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border-3 transition-all ${
-                idx === galleryIndex ? 'border-white ring-4 ring-white/50 shadow-xl' : 'border-white/30 hover:border-white/70'
-              }`}
-            >
-              <CldImage
-                width={150}
-                height={150}
-                src={img}
-                alt=""
-                className="object-cover w-full h-full"
-                crop="fill"
-              />
-            </button>
-          ))}
-        </div>
-      </div>
-    )}
-  </div>
-)}
+            {/* Thumbnail Grid */}
+            <div className="grid grid-cols-4 gap-4">
+              {product.images.map((img: string, idx: number) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(idx)}
+                  className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                    selectedImage === idx ? 'border-primary ring-2 ring-primary/50' : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <CldImage
+                    width={200}
+                    height={200}
+                    src={img}
+                    alt=""
+                    className="object-cover"
+                    crop="fill"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Details */}
           <div>
